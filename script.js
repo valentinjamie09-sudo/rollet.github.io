@@ -1,76 +1,69 @@
 body {
   font-family: Arial, sans-serif;
-  background: #fafafa;
-  text-align: center;
-  margin: 0;
-  padding: 0;
-}
-
-h1 {
-  margin-top: 32px;
-  color: #1d3557;
-}
-
-.roulette-section {
-  margin: 32px auto;
-  max-width: 480px;
-}
-
-#roulette-wheel-container {
-  position: relative;
-  width: 360px;
-  height: 360px;
-  margin: 0 auto 24px auto;
-}
-
-#roulette-pointer {
-  position: absolute;
-  left: 50%;
-  top: 7px;
-  transform: translateX(-50%);
-  width: 0;
-  height: 0;
-  border-left: 20px solid transparent;
-  border-right: 20px solid transparent;
-  border-bottom: 40px solid #ffd700;
-  z-index: 2;
-}
-
-#roulette-svg {
-  width: 360px;
-  height: 360px;
-  display: block;
-  margin: 0 auto;
-  border-radius: 50%;
-  box-shadow: 0 8px 32px rgba(0,0,0,0.22);
-  background: #222;
-}
-
-#spin-btn {
-  padding: 13px 40px;
-  font-size: 1.2rem;
-  border: none;
-  border-radius: 8px;
-  background: #1d3557;
+  background: #111;
   color: #fff;
+  text-align: center;
+}
+
+.container {
+  margin-top: 40px;
+}
+
+.roulette-wheel {
+  width: 200px;
+  height: 200px;
+  border: 10px solid gold;
+  border-radius: 50%;
+  margin: 20px auto;
+  background: conic-gradient(
+    red 0deg 20deg,
+    black 20deg 40deg,
+    red 40deg 60deg,
+    black 60deg 80deg,
+    red 80deg 100deg,
+    black 100deg 120deg,
+    red 120deg 140deg,
+    black 140deg 160deg,
+    red 160deg 180deg,
+    black 180deg 200deg,
+    red 200deg 220deg,
+    black 220deg 240deg,
+    red 240deg 260deg,
+    black 260deg 280deg,
+    red 280deg 300deg,
+    black 300deg 320deg,
+    red 320deg 340deg,
+    black 340deg 360deg
+  );
+  transition: transform 4s ease-out;
+}
+
+.controls {
+  margin-top: 20px;
+}
+
+input[type="number"] {
+  width: 80px;
+  padding: 5px;
+}
+
+button {
+  padding: 10px;
+  margin: 5px;
+  font-size: 16px;
   cursor: pointer;
-  margin-top: 6px;
-  transition: background .2s;
 }
 
-#spin-btn:disabled {
-  background: #aaa;
-  cursor: not-allowed;
+.number-grid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  max-width: 300px;
+  margin: 10px auto;
 }
 
-#roulette-result {
-  margin-top: 30px;
-  font-size: 1.3rem;
-  min-height: 2.5em;
-  color: #222;
-  background: #f4f4f4;
-  display: inline-block;
-  padding: 0.6em 1.4em;
-  border-radius: 12px;
-  border: 2px solid #e63946;
+.number-grid button {
+  width: 40px;
+  height: 40px;
+  margin: 2px;
 }
