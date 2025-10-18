@@ -1,4 +1,3 @@
-/* Grundlayout */
 body {
   background-color: #111;
   color: #f0f0f0;
@@ -11,7 +10,6 @@ body {
   min-height: 100vh;
 }
 
-/* Container */
 .container {
   width: 95%;
   max-width: 1000px;
@@ -21,7 +19,6 @@ body {
   padding: 20px;
 }
 
-/* Header */
 header {
   display: flex;
   justify-content: space-between;
@@ -39,7 +36,6 @@ header h1 {
   color: #ffc107;
 }
 
-/* Hauptbereich */
 main {
   display: flex;
   flex-wrap: wrap;
@@ -48,7 +44,6 @@ main {
   gap: 20px;
 }
 
-/* Roulette-Rad */
 .roulette-section {
   position: relative;
   width: 400px;
@@ -63,28 +58,23 @@ main {
 
 #ball {
   position: absolute;
-  width: 18px;
-  height: 18px;
+  width: 20px;
+  height: 20px;
   background: white;
   border-radius: 50%;
   top: 10px;
   left: 190px;
-  transition: transform 4s ease-out;
+  transform-origin: 10px 190px;
 }
 
-/* Steuerung */
 .control-section {
   flex: 1;
   min-width: 250px;
   text-align: center;
 }
 
-.control-section h2 {
-  margin-bottom: 10px;
-}
-
 input[type="number"] {
-  width: 80px;
+  width: 100px;
   padding: 6px;
   font-size: 1rem;
   border-radius: 5px;
@@ -92,7 +82,6 @@ input[type="number"] {
   margin-bottom: 10px;
 }
 
-/* Buttons */
 .btn {
   border: none;
   padding: 10px 20px;
@@ -125,14 +114,13 @@ input[type="number"] {
   transform: scale(1.05);
 }
 
-/* Ergebnis */
 #result {
   margin-top: 15px;
   font-size: 1.2rem;
   color: #ccc;
 }
 
-/* --- MOBILE STYLES --- */
+/* Responsive */
 @media (max-width: 700px) {
   main {
     flex-direction: column;
@@ -150,5 +138,6 @@ input[type="number"] {
 
   #ball {
     left: 140px;
+    transform-origin: 10px 140px;
   }
 }
