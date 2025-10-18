@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <title>Mimo Roulette</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="container">
+    <h1>Mimo Roulette</h1>
+    <p>Kontostand: <span id="balance">1000</span> Chips</p>
+
+    <div class="roulette-wheel" id="wheel"></div>
+
+    <div class="controls">
+      <label for="bet">Dein Einsatz:</label>
+      <input type="number" id="bet" value="10" min="1">
+      <div>
+        <button id="red">Rot</button>
+        <button id="black">Schwarz</button>
+      </div>
+      <div class="number-grid" id="numberGrid"></div>
+      <button id="spinBtn">🎰 Drehen!</button>
+    </div>
+
+    <p id="result"></p>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
