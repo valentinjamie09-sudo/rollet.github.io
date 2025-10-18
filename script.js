@@ -1,29 +1,39 @@
 body {
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  background: radial-gradient(circle, #0b0b0b, #000);
-  color: #fff;
+  background-color: #0d0d0d;
+  color: white;
+  font-family: Arial, sans-serif;
   text-align: center;
   margin: 0;
-  padding: 0;
+  padding: 20px;
 }
 
-.container {
-  margin-top: 40px;
+.game-container {
+  max-width: 600px;
+  margin: auto;
 }
 
-.roulette-wrapper {
+h1 {
+  font-size: 28px;
+  margin-bottom: 10px;
+}
+
+.balance {
+  font-size: 18px;
+  margin-bottom: 20px;
+}
+
+.roulette {
   position: relative;
-  width: 300px;
-  height: 300px;
-  margin: 30px auto;
-  perspective: 1000px;
+  width: 250px;
+  height: 250px;
+  margin: 20px auto;
 }
 
-.roulette-wheel {
+.wheel {
   width: 100%;
   height: 100%;
+  border: 8px solid gold;
   border-radius: 50%;
-  border: 8px solid #c8aa6e;
   background: conic-gradient(
     red 0deg 9.72deg,
     black 9.72deg 19.44deg,
@@ -62,57 +72,112 @@ body {
     green 330.48deg 360deg
   );
   transition: transform 4s ease-out;
-  box-shadow: 0 0 30px #c8aa6e;
 }
 
-.marker {
+.pointer {
   position: absolute;
-  top: -10px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 0;
-  height: 0;
-  border-left: 10px solid transparent;
-  border-right: 10px solid transparent;
-  border-bottom: 20px solid white;
+  top: 50%;
+  right: -10px;
+  transform: translateY(-50%);
+  width: 10px;
+  height: 10px;
+  border: 10px solid white;
+  border-left-color: transparent;
+  border-top-color: transparent;
+  transform: rotate(45deg);
 }
 
-.controls {
-  margin-top: 20px;
+.welcome {
+  background-color: #2b2b2b;
+  padding: 10px;
+  margin: 20px 0;
+}
+
+.betting {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  flex-wrap: wrap;
 }
 
 input[type="number"] {
-  width: 80px;
+  width: 60px;
   padding: 5px;
-}
-
-button {
-  padding: 10px;
-  margin: 5px;
   font-size: 16px;
-  cursor: pointer;
-  background: #222;
-  color: white;
-  border: 2px solid #555;
-  border-radius: 5px;
 }
 
-button:hover {
-  background: #444;
+.color-btn {
+  padding: 10px 20px;
+  font-size: 16px;
+  border: none;
+  cursor: pointer;
+}
+
+.red {
+  background-color: #c0392b;
+  color: white;
+}
+
+.black {
+  background-color: #1c1c1c;
+  color: white;
+}
+
+.number-pick {
+  margin: 20px 0;
 }
 
 .number-grid {
-  display: flex;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 5px;
   justify-content: center;
-  max-width: 360px;
-  margin: 10px auto;
 }
 
 .number-grid button {
   width: 40px;
   height: 40px;
-  margin: 2px;
   font-weight: bold;
-  border-radius: 50%;
+  border: none;
+  border-radius: 5px;
+  color: white;
+  cursor: pointer;
+}
+
+.number-grid button.red {
+  background-color: red;
+}
+
+.number-grid button.black {
+  background-color: black;
+}
+
+.number-grid button.green {
+  background-color: green;
+}
+
+.number-grid button.selected {
+  outline: 3px solid yellow;
+}
+
+.spin-btn {
+  margin-top: 10px;
+  padding: 15px 30px;
+  background-color: #2c3e50;
+  color: white;
+  font-size: 18px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.spin-btn:disabled {
+  background-color: #555;
+  cursor: not-allowed;
+}
+
+.result-msg {
+  margin-top: 20px;
+  font-size: 18px;
 }
