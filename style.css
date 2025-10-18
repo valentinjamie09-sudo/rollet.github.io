@@ -1,114 +1,33 @@
-body {
-  font-family: Inter, system-ui, Arial;
-  background: #0f1724;
-  color: #e6eef8;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 20px;
+:root{
+  --bg:#0f0f10; --panel:#161616; --muted:#9aa0a6; --accent:#1e3a8a;
+  --red:#b32020; --black:#0b0b0b; --green:#0aa46a; --gold:#c58a17;
 }
-
-.container {
-  width: 100%;
-  max-width: 980px;
-}
-
-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 12px;
-}
-
-.wheel {
-  width: 320px;
-  height: 320px;
-  border-radius: 50%;
-  background: linear-gradient(#111, #222);
-  margin: 12px auto;
-  position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
-}
-
-.ball {
-  width: 18px;
-  height: 18px;
-  border-radius: 50%;
-  background: #fff;
-  position: absolute;
-  top: 12px;
-  left: 50%;
-  transform: translateX(-50%);
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.6);
-}
-
-.controls {
-  display: flex;
-  gap: 12px;
-  align-items: center;
-  flex-wrap: wrap;
-  margin-bottom: 12px;
-}
-
-.bets {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 8px;
-  margin-bottom: 12px;
-}
-
-button,
-select,
-input {
-  padding: 8px 10px;
-  border-radius: 6px;
-  border: none;
-  background: #0b1220;
-  color: #e6eef8;
-  cursor: pointer;
-}
-
-input[type="number"] {
-  width: 120px;
-}
-
-.balance {
-  background: #071029;
-  padding: 8px 12px;
-  border-radius: 8px;
-}
-
-.log {
-  max-height: 220px;
-  overflow: auto;
-  background: #051025;
-  padding: 8px;
-  border-radius: 8px;
-  font-size: 14px;
-}
-
-.bet-list {
-  background: #041223;
-  padding: 8px;
-  border-radius: 8px;
-  margin-bottom: 8px;
-}
-
-.small {
-  font-size: 13px;
-  color: #9fb2d0;
-}
-
-footer {
-  margin-top: 12px;
-  font-size: 12px;
-  color: #9fb2d0;
-}
-
-.status {
-  margin-left: 12px;
-  color: #cbe7c6;
-}
+*{box-sizing:border-box;font-family:Inter,Segoe UI,Arial,sans-serif}
+body{margin:0;background:var(--bg);color:#fff;display:flex;align-items:center;justify-content:center;min-height:100vh}
+.container{width:900px;max-width:98%;padding:20px}
+header{display:flex;align-items:center;gap:14px}
+header .title{font-size:22px;font-weight:700;letter-spacing:0.4px}
+header .balance{margin-left:auto;color:var(--muted);display:flex;align-items:center;gap:8px}
+.card{background:linear-gradient(180deg,#161616 0,#111 100%);border-radius:8px;padding:18px;border:1px solid #222}
+.top{display:flex;gap:18px}
+.wheel-wrap{flex:0 0 460px;display:flex;flex-direction:column;align-items:center;gap:12px}
+.wheel-stage{position:relative;width:420px;height:420px;border-radius:50%;display:flex;align-items:center;justify-content:center}
+canvas#wheel{border-radius:50%}
+.ball{position:absolute;right:46px;top:50%;width:18px;height:18px;border-radius:50%;background:#fff;box-shadow:0 2px 6px rgba(0,0,0,0.6)}
+.wheel-center{position:absolute;width:60px;height:60px;border-radius:50%;background:var(--gold);display:flex;align-items:center;justify-content:center;font-weight:700;color:#111}
+.controls{flex:1;display:flex;flex-direction:column;gap:12px;padding:4px}
+.welcome{background:#171717;border-radius:4px;padding:10px;text-align:center;color:var(--muted)}
+.bet-row{display:flex;gap:12px;align-items:center}
+.bet-row input[type=number]{width:120px;padding:8px;border-radius:4px;border:1px solid #222;background:#0b0b0b;color:#fff}
+.btn{padding:10px 16px;border-radius:6px;border:0;cursor:pointer;font-weight:700}
+.btn-red{background:var(--red);color:#fff}
+.btn-black{background:#0b0b0b;color:#fff;border:1px solid #222}
+.btn-spin{background:var(--accent);color:#fff;padding:12px 20px;font-size:16px;border-radius:6px}
+.numbers-grid{display:grid;grid-template-columns:repeat(12,1fr);gap:10px;margin-top:14px}
+.num{height:40px;display:flex;align-items:center;justify-content:center;border-radius:4px;background:#0b0b0b;border:1px solid #222;color:#fff;cursor:pointer}
+.num.green{background:var(--green);color:#04291f}
+.num.red{background:var(--red)}
+.num.black{background:#0b0b0b}
+.result{margin-top:10px;padding:10px;border-radius:6px;background:#0b0b0b;color:var(--muted)}
+footer{margin-top:12px;display:flex;justify-content:space-between;align-items:center;color:var(--muted)}
+@media (max-width:920px){.top{flex-direction:column}.wheel-wrap{order:0}}
