@@ -9,25 +9,18 @@ window.addEventListener("DOMContentLoaded", () => {
   const colors = {};
   numbersOrder.forEach(n => colors[n] = n === 0 ? "green" : (redSet.has(n) ? "red" : "black"));
 
-  let spinning = false;
   let rotation = 0;
+  let spinning = false;
 
-  // --- Resize Canvas (mit Seitenverhältnis fix) ---
   function resizeCanvas() {
-    const parent = canvas.parentElement;
-    const cssSize = Math.min(parent.clientWidth, 400);
-    canvas.width = cssSize * (window.devicePixelRatio || 1);
-    canvas.height = cssSize * (window.devicePixelRatio || 1);
-    canvas.style.width = cssSize + "px";
-    canvas.style.height = cssSize + "px";
-
-    ctx.setTransform(1, 0, 0, 1, 0, 0); // Reset
-    ctx.scale(window.devicePixelRatio || 1, window.devicePixelRatio || 1);
-
-    drawWheel(cssSize);
+    const size = Math.min(canvas.parentElement.clientWidth, 400);
+    const scale = window.devicePixelRatio || 1;
+    canvas.width = size * scale;
+    canvas.height = size * scale;
+    ctx.scale(scale, scale);
+    drawWheel(size);
   }
 
-  // --- Rad zeichnen ---
   function drawWheel(size) {
     const center = size / 2;
     const radius = center - 6;
@@ -42,7 +35,6 @@ window.addEventListener("DOMContentLoaded", () => {
       const num = numbersOrder[i];
       const fill = num === 0 ? "#0aa46a" : (colors[num] === "red" ? "#b32020" : "#0b0b0b");
 
-      // Segment zeichnen
       ctx.beginPath();
       ctx.moveTo(center, center);
       ctx.arc(center, center, radius, start, end);
@@ -53,31 +45,27 @@ window.addEventListener("DOMContentLoaded", () => {
       ctx.lineWidth = 2;
       ctx.stroke();
 
-      // Zahl platzieren
       ctx.save();
       ctx.translate(center, center);
       ctx.rotate(start + arc / 2);
       ctx.textAlign = "center";
       ctx.textBaseline = "middle";
       ctx.fillStyle = num === 0 ? "#003322" : "#fff";
-      ctx.font = `bold ${Math.round(size / 26)}px Inter, Arial`;
+      ctx.font = `bold ${Math.round(size / 26)}px Inter`;
       const textRadius = radius * 0.82;
       ctx.fillText(num.toString(), textRadius, 0);
       ctx.restore();
     }
 
-    // Mitte Kreis
     ctx.beginPath();
     ctx.arc(center, center, radius * 0.12, 0, Math.PI * 2);
     ctx.fillStyle = "#c58a17";
     ctx.fill();
 
-    // Pfeil oben
-    const triSize = Math.max(12, size * 0.04);
     ctx.beginPath();
-    ctx.moveTo(center - triSize / 2, 10);
-    ctx.lineTo(center + triSize / 2, 10);
-    ctx.lineTo(center, 10 + triSize);
+    ctx.moveTo(center - 10, 10);
+    ctx.lineTo(center + 10, 10);
+    ctx.lineTo(center, 25);
     ctx.closePath();
     ctx.fillStyle = "#c58a17";
     ctx.fill();
@@ -86,7 +74,6 @@ window.addEventListener("DOMContentLoaded", () => {
   resizeCanvas();
   window.addEventListener("resize", resizeCanvas);
 
-  // --- Spin Logik ---
   function getResultFromRotation(rotDeg) {
     const seg = numbersOrder.length;
     const segDeg = 360 / seg;
