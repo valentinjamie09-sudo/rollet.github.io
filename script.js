@@ -11,13 +11,30 @@ window.addEventListener("DOMContentLoaded", () => {
   const betInput = document.getElementById('bet');
   const redBtn = document.getElementById('bet-red');
   const blackBtn = document.getElementById('bet-black');
-  const numberBet = document.getElementById('numberBet');
   const resultBox = document.getElementById('result');
   const balanceEl = document.getElementById('balance');
+  const numberGrid = document.getElementById('number-grid');
 
   let selectedColor = null;
+  let selectedNumber = null;
   let balance = 1000;
   let spinning = false;
+
+  // 🎯 Zahlen-Buttons generieren
+  for (let i = 0; i <= 36; i++) {
+    const btn = document.createElement('button');
+    btn.className = `number-btn ${colors[i]}`;
+    btn.textContent = i;
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.number-btn').forEach(b => b.classList.remove('selected'));
+      btn.classList.add('selected');
+      selectedNumber = i;
+      selectedColor = null;
+      redBtn.style.opacity = 1;
+      blackBtn.style.opacity = 1;
+    });
+    numberGrid.appendChild(btn);
+  }
 
   const size = canvas.width;
   const center = size / 2;
@@ -48,32 +65,31 @@ window.addEventListener("DOMContentLoaded", () => {
       ctx.fillText(n.toString(), radius - 20, 4);
       ctx.restore();
     }
-
-    ctx.beginPath();
-    ctx.arc(center, center, radius + 6, 0, Math.PI * 2);
-    ctx.lineWidth = 6;
-    ctx.strokeStyle = '#c58a17';
-    ctx.stroke();
   }
 
   drawWheel();
 
   redBtn.addEventListener('click', () => {
     selectedColor = 'red';
+    selectedNumber = null;
     redBtn.style.opacity = 0.7;
     blackBtn.style.opacity = 1;
+    document.querySelectorAll('.number-btn').forEach(b => b.classList.remove('selected'));
   });
+
   blackBtn.addEventListener('click', () => {
     selectedColor = 'black';
+    selectedNumber = null;
     blackBtn.style.opacity = 0.7;
     redBtn.style.opacity = 1;
+    document.querySelectorAll('.number-btn').forEach(b => b.classList.remove('selected'));
   });
 
   spinBtn.addEventListener('click', () => {
     if (spinning) return;
     const bet = parseInt(betInput.value);
     if (!bet || bet <= 0 || bet > balance) return alert('Ungültiger Einsatz!');
-    if (!selectedColor && !numberBet.value) return alert('Wähle Rot, Schwarz oder eine Zahl!');
+    if (!selectedColor && selectedNumber === null) return alert('Wähle Rot, Schwarz oder eine Zahl!');
 
     balance -= bet;
     balanceEl.textContent = balance;
@@ -108,7 +124,7 @@ window.addEventListener("DOMContentLoaded", () => {
         let win = 0;
 
         if (selectedColor && color === selectedColor) win = bet * 2;
-        if (numberBet.value && parseInt(numberBet.value) === resultNum) win = bet * 35;
+        if (selectedNumber === resultNum) win = bet * 35;
 
         balance += win;
         balanceEl.textContent = balance;
