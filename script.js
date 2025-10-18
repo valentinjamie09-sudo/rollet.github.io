@@ -1,251 +1,123 @@
-// --- Roulette data and helpers ----------
-const COLORS = {
-  0: 'green',
-  1: 'red', 2: 'black', 3: 'red', 4: 'black', 5: 'red', 6: 'black', 7: 'red', 8: 'black', 9: 'red',
-  10: 'black', 11: 'black', 12: 'red', 13: 'black', 14: 'red', 15: 'black', 16: 'red', 17: 'black', 18: 'red',
-  19: 'red', 20: 'black', 21: 'red', 22: 'black', 23: 'red', 24: 'black', 25: 'red', 26: 'black', 27: 'red',
-  28: 'black', 29: 'black', 30: 'red', 31: 'black', 32: 'red', 33: 'black', 34: 'red', 35: 'black', 36: 'red'
-};
+const numbersOrder = [0,32,15,19,4,21,2,25,17,34,6,27,13,36,11,30,8,23,10,5,24,16,33,1,20,14,31,9,22,18,29,7,28,12,35,3,26];
+const colors = {};
+const redSet = new Set([32,19,21,25,34,27,36,30,23,5,16,1,14,9,18,7,12,3]);
+numbersOrder.forEach(n => { colors[n] = n===0?'green':(redSet.has(n)?'red':'black'); });
 
-const PAYOUTS = {
-  straight: 35,
-  red: 1,
-  black: 1,
-  even: 1,
-  odd: 1,
-  low: 1,
-  high: 1,
-  column: 2,
-  dozen: 2
-};
+const canvas = document.getElementById('wheel');
+const ctx = canvas.getContext('2d');
+const size = canvas.width;
+const center = size/2;
+const radius = center - 8;
 
-// game state
-let state = {
-  balance: 1000,
-  bets: [],
-  history: []
-};
+function drawWheel(){
+  ctx.clearRect(0,0,size,size);
+  const seg = numbersOrder.length;
+  const arc = 2*Math.PI/seg;
+  ctx.lineWidth = 4;
+  ctx.strokeStyle = '#222';
+  for(let i=0;i<seg;i++){
+    const start = -Math.PI/2 + i*arc;
+    const end = start + arc;
+    ctx.beginPath();
+    ctx.moveTo(center,center);
+    ctx.arc(center,center,radius,start,end);
+    ctx.closePath();
+    const n = numbersOrder[i];
+    ctx.fillStyle = colors[n]==='green'?'#0aa46a':(colors[n]==='red'?'#b32020':'#0b0b0b');
+    ctx.fill();
+    ctx.stroke();
+    ctx.save();
+    ctx.translate(center,center);
+    const angle = start + arc/2;
+    ctx.rotate(angle);
+    ctx.textAlign = 'center';
+    ctx.fillStyle = colors[n]==='green'?'#04291f':'#fff';
+    ctx.font = 'bold 14px Inter, Arial';
+    ctx.fillText(n.toString(), radius - 24, 6);
+    ctx.restore();
+  }
+  ctx.beginPath();
+  ctx.arc(center,center,radius+6,0,Math.PI*2);
+  ctx.lineWidth = 6;
+  ctx.strokeStyle = '#c58a17';
+  ctx.stroke();
+}
 
-// DOM Elements
+drawWheel();
+
+const grid = document.getElementById('numbersGrid');
+for(let i=0;i<=36;i++){
+  const btn = document.createElement('div');
+  btn.className='num '+(colors[i]||'black');
+  btn.textContent = i;
+  btn.dataset.num = i;
+  btn.addEventListener('click', ()=> selectNumber(btn));
+  grid.appendChild(btn);
+}
+
+let selectedNumber = null;
+let selectedColor = null;
+function selectNumber(el){
+  selectedColor=null;
+  document.querySelectorAll('.num').forEach(n=>n.style.outline='');
+  el.style.outline='3px solid rgba(255,255,255,0.12)';
+  selectedNumber = parseInt(el.dataset.num,10);
+  document.getElementById('message').textContent = 'Gewählt: Zahl '+selectedNumber;
+}
+
+document.getElementById('betRed').addEventListener('click', ()=>{selectedColor='red';selectedNumber=null;document.querySelectorAll('.num').forEach(n=>n.style.outline='');document.getElementById('message').textContent='Gewählt: Rot';});
+document.getElementById('betBlack').addEventListener('click', ()=>{selectedColor='black';selectedNumber=null;document.querySelectorAll('.num').forEach(n=>n.style.outline='');document.getElementById('message').textContent='Gewählt: Schwarz';});
+
+let balance = 1000;
 const balanceEl = document.getElementById('balance');
-const betTypeEl = document.getElementById('bet-type');
-const betValueEl = document.getElementById('bet-value');
-const betAmountEl = document.getElementById('bet-amount');
-const addBetBtn = document.getElementById('add-bet');
-const spinBtn = document.getElementById('spin');
-const betListEl = document.getElementById('bet-list');
-const betsEmptyEl = document.getElementById('bets-empty');
-const logEl = document.getElementById('log');
-const statusEl = document.getElementById('status');
-const wheelLabel = document.getElementById('wheel-label');
-const ballEl = document.getElementById('ball');
+function refreshBalance(){balanceEl.textContent = balance;}
+refreshBalance();
 
-function updateBalance() {
-  balanceEl.textContent = state.balance.toFixed(2);
+const spinBtn = document.getElementById('spinBtn');
+const betAmountInput = document.getElementById('betAmount');
+const resultBox = document.getElementById('resultBox');
+let spinning = false;
+
+function getWinningIndexFromAngle(angle){
+  const seg = numbersOrder.length;
+  const segDeg = 360/seg;
+  let a = ((-angle + 90) % 360 + 360) % 360;
+  return Math.floor(a/segDeg) % seg;
 }
 
-function log(msg) {
-  const d = new Date().toLocaleTimeString();
-  logEl.insertAdjacentHTML('afterbegin', `<div>[${d}] ${msg}</div>`);
-}
-
-function renderBets() {
-  if (state.bets.length === 0) {
-    betsEmptyEl.style.display = 'block';
-    return;
-  }
-  betsEmptyEl.style.display = 'none';
-  const content = document.createElement('div');
-  content.innerHTML = state.bets.map((b, i) =>
-    `<div>#${i + 1}: ${b.type}${b.value !== null ? ' ' + b.value : ''} — ${b.amount}€</div>`
-  ).join('');
-  betListEl.querySelectorAll('div').forEach(n => n.remove());
-  const title = document.createElement('strong');
-  title.textContent = 'Aktuelle Wetten:';
-  betListEl.appendChild(title);
-  betListEl.appendChild(content);
-}
-
-function secureRandomInt(n) {
-  const maxUint32 = 0xffffffff;
-  const rnd = crypto.getRandomValues(new Uint32Array(1))[0];
-  return Math.floor((rnd / (maxUint32 + 1)) * n);
-}
-
-function evaluateBets(outcome) {
-  const wins = [], losses = [];
-  for (const b of state.bets) {
-    let win = false;
-    let payout = 0;
-    const desc = `${b.type}${b.value !== null ? ' ' + b.value : ''} (${b.amount}€)`;
-
-    switch (b.type) {
-      case 'straight':
-        if (outcome === b.value) {
-          win = true;
-          payout = b.amount * (PAYOUTS.straight + 1);
-        }
-        break;
-      case 'red':
-        if (COLORS[outcome] === 'red') {
-          win = true;
-          payout = b.amount * (PAYOUTS.red + 1);
-        }
-        break;
-      case 'black':
-        if (COLORS[outcome] === 'black') {
-          win = true;
-          payout = b.amount * (PAYOUTS.black + 1);
-        }
-        break;
-      case 'even':
-        if (outcome !== 0 && outcome % 2 === 0) {
-          win = true;
-          payout = b.amount * (PAYOUTS.even + 1);
-        }
-        break;
-      case 'odd':
-        if (outcome % 2 === 1) {
-          win = true;
-          payout = b.amount * (PAYOUTS.odd + 1);
-        }
-        break;
-      case 'low':
-        if (outcome >= 1 && outcome <= 18) {
-          win = true;
-          payout = b.amount * (PAYOUTS.low + 1);
-        }
-        break;
-      case 'high':
-        if (outcome >= 19 && outcome <= 36) {
-          win = true;
-          payout = b.amount * (PAYOUTS.high + 1);
-        }
-        break;
-      case 'column':
-        if (outcome !== 0) {
-          const col = ((outcome - 1) % 3) + 1;
-          if (col === b.value) {
-            win = true;
-            payout = b.amount * (PAYOUTS.column + 1);
-          }
-        }
-        break;
-      case 'dozen':
-        if (outcome >= 1 && outcome <= 36) {
-          const dz = Math.floor((outcome - 1) / 12) + 1;
-          if (dz === b.value) {
-            win = true;
-            payout = b.amount * (PAYOUTS.dozen + 1);
-          }
-        }
-        break;
-      default:
-        console.warn('Unknown bet type', b.type);
+function spin(){
+  if(spinning) return;
+  const bet = Math.floor(Number(betAmountInput.value)||0);
+  if(bet<=0){ resultBox.textContent='Setze einen gültigen Betrag.'; return; }
+  if(bet>balance){ resultBox.textContent='Nicht genug Chips.'; return; }
+  if(!selectedColor && selectedNumber===null){ resultBox.textContent='Wähle Rot/Schwarz oder eine Zahl.'; return; }
+  spinning=true; resultBox.textContent='Dreht...'; balance-=bet; refreshBalance();
+  const minTurns=4,maxTurns=7,seg=numbersOrder.length,segDeg=360/seg;
+  const targetIndex=Math.floor(Math.random()*seg);
+  const targetAngle=-(targetIndex*segDeg+segDeg/2)+(Math.random()*(segDeg-2)-(segDeg-2)/2);
+  const turns=(Math.random()*(maxTurns-minTurns)+minTurns);
+  const finalAngle=turns*360+targetAngle;
+  canvas.style.transition='transform 4s cubic-bezier(.12,.9,.24,1)';
+  canvas.style.transform='rotate('+finalAngle+'deg)';
+  const ball=document.getElementById('ball');
+  ball.style.transition='right 4s cubic-bezier(.12,.9,.24,1)';
+  ball.style.right='18px';
+  setTimeout(()=>{ball.style.right='46px';},4000);
+  setTimeout(()=>{
+    canvas.style.transition='';
+    const landedIndex=getWinningIndexFromAngle(finalAngle);
+    const landedNumber=numbersOrder[landedIndex];
+    const landedColor=colors[landedNumber];
+    let payout=0,message='';
+    if(selectedNumber!==null){
+      if(selectedNumber===landedNumber){payout=bet*35;message='Gewonnen! Zahl '+landedNumber+' ('+landedColor+') — Auszahlung: '+payout+' Chips';}
+      else{message='Verloren. Gewonnen wurde Zahl '+landedNumber+' ('+landedColor+').';}
+    }else if(selectedColor){
+      if(selectedColor===landedColor){payout=bet*2;message='Gewonnen! Farbe '+landedColor+' — Auszahlung: '+payout+' Chips';}
+      else{message='Verloren. Gewonnen wurde Zahl '+landedNumber+' ('+landedColor+').';}
     }
-
-    if (win) wins.push({ description: desc, payout });
-    else losses.push({ description: desc, amount: b.amount });
-  }
-  return { wins, losses };
+    balance+=payout;refreshBalance();resultBox.textContent=message;selectedNumber=null;selectedColor=null;document.querySelectorAll('.num').forEach(n=>n.style.outline='');document.getElementById('message').textContent='';const normalized=finalAngle%360;canvas.style.transform='rotate('+normalized+'deg)';spinning=false;},4200);
 }
 
-addBetBtn.addEventListener('click', () => {
-  const type = betTypeEl.value;
-  let valueRaw = betValueEl.value.trim();
-  const amount = Number(betAmountEl.value);
-  if (!amount || amount <= 0) {
-    alert('Ungültiger Einsatz');
-    return;
-  }
-  if (amount > state.balance) {
-    alert('Nicht genug Balance');
-    return;
-  }
-
-  let value;
-  if (type === 'straight') {
-    value = Number(valueRaw);
-    if (!Number.isInteger(value) || value < 0 || value > 36) {
-      alert('Bitte Zahl 0–36 angeben');
-      return;
-    }
-  } else if (type === 'column' || type === 'dozen') {
-    value = Number(valueRaw);
-    if (![1, 2, 3].includes(value)) {
-      alert(`${type} muss 1, 2 oder 3 sein`);
-      return;
-    }
-  } else {
-    value = null;
-  }
-
-  state.bets.push({ type, value, amount });
-  state.balance -= amount;
-  updateBalance();
-  renderBets();
-  log(`Wette gesetzt: ${type}${value !== null ? ' ' + value : ''} — ${amount}€`);
-});
-
-spinBtn.addEventListener('click', async () => {
-  if (state.bets.length === 0) {
-    alert('Keine Wetten gesetzt');
-    return;
-  }
-
-  statusEl.textContent = 'Dreht...';
-  spinBtn.disabled = true;
-  addBetBtn.disabled = true;
-  ballEl.style.display = 'block';
-  wheelLabel.textContent = 'Drehen...';
-
-  await new Promise(r => setTimeout(r, 800));
-
-  const outcome = secureRandomInt(37);
-  const color = COLORS[outcome];
-  wheelLabel.textContent = `Ergebnis: ${outcome} (${color})`;
-  ballEl.style.display = 'none';
-
-  const results = evaluateBets(outcome);
-  results.wins.forEach(w => {
-    state.balance += w.payout;
-    log(`Gewinn: ${w.description} -> +${w.payout}€`);
-  });
-  results.losses.forEach(l => {
-    log(`Verloren: ${l.description} -> -${l.amount}€`);
-  });
-
-  state.history.unshift({ outcome, color, bets: state.bets.slice(), results });
-  state.bets = [];
-  renderBets();
-  updateBalance();
-
-  statusEl.textContent = 'Bereit';
-  spinBtn.disabled = false;
-  addBetBtn.disabled = false;
-});
-
-// Initial
-updateBalance();
-renderBets();
-log('Roulette bereit. Viel Erfolg!');
-
-// Simple test function
-function _runRouletteTests() {
-  const savedBets = state.bets, savedBal = state.balance;
-
-  state.bets = [{ type: 'straight', value: 7, amount: 10 }];
-  let r = evaluateBets(7);
-  console.assert(r.wins.length === 1 && r.wins[0].payout === 10 * 36, "Straight test failed");
-
-  state.bets = [{ type: 'even', amount: 10 }];
-  r = evaluateBets(2);
-  console.assert(r.wins.length === 1, "Even win failed");
-
-  state.bets = [{ type: 'odd', amount: 10 }];
-  r = evaluateBets(2);
-  console.assert(r.losses.length === 1, "Odd loss failed");
-
-  state.bets = savedBets;
-  state.balance = savedBal;
-}
+spinBtn.addEventListener('click',spin);
+betAmountInput.addEventListener('keydown',(e)=>{if(e.key==='Enter')spin();});
