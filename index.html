@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Roulette Classic</title>
-  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
   <div class="container">
@@ -14,40 +14,34 @@
     </header>
 
     <div class="card">
-      <div class="top">
-        <div class="wheel-wrap">
-          <div class="wheel-stage">
-            <canvas id="wheel" width="420" height="420"></canvas>
-            <div id="ball" class="ball"></div>
-            <div class="pointer"></div>
-            <div class="wheel-center">▼</div>
-          </div>
+      <div class="wheel-wrap">
+        <div class="wheel-stage">
+          <canvas id="wheel" width="400" height="400"></canvas>
+          <div id="ball" class="ball"></div>
+          <div class="pointer"></div>
+        </div>
+      </div>
+
+      <div class="controls">
+        <h3>Willkommen beim Roulette Classic!</h3>
+
+        <label>Dein Einsatz:</label>
+        <input type="number" id="bet" min="1" max="1000" value="5">
+
+        <div class="color-bets">
+          <button id="bet-red" class="btn red">Rot</button>
+          <button id="bet-black" class="btn black">Schwarz</button>
         </div>
 
-        <div class="controls">
-          <div class="welcome">Willkommen beim Roulette Classic!</div>
+        <p>Oder wähle eine Zahl (0–36):</p>
+        <div id="number-grid" class="number-grid"></div>
 
-          <div class="bet-row">
-            <label>Dein Einsatz:</label>
-            <input type="number" id="bet" min="1" max="1000" value="5" />
-          </div>
-
-          <div class="color-bets">
-            <button id="bet-red" class="btn btn-red">Rot</button>
-            <button id="bet-black" class="btn btn-black">Schwarz</button>
-          </div>
-
-          <div class="numbers-label">Oder wähle eine Zahl (0–36):</div>
-          <div class="number-grid" id="number-grid"></div>
-
-          <button id="spin" class="btn btn-spin">🎡 Drehen!</button>
-          <div id="result" class="result"></div>
-        </div>
+        <button id="spin" class="btn spin">🎡 Drehen!</button>
+        <div id="result" class="result"></div>
       </div>
     </div>
   </div>
 
-  <!-- Wichtig: Skript am Ende laden -->
-  <script src="./script.js"></script>
+  <script src="script.js"></script>
 </body>
 </html>
