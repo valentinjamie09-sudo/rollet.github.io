@@ -15,8 +15,10 @@
 
     <main>
       <div class="roulette-section">
-        <canvas id="wheel" width="400" height="400"></canvas>
-        <div id="ball"></div>
+        <div class="wheel-container">
+          <canvas id="wheel" width="400" height="400"></canvas>
+          <div id="ball"></div>
+        </div>
       </div>
 
       <div class="control-section">
@@ -29,6 +31,8 @@
           <button id="redBtn" class="btn red">Rot</button>
           <button id="blackBtn" class="btn black">Schwarz</button>
         </div>
+
+        <input type="number" id="numberBet" min="0" max="36" placeholder="Oder Zahl (0-36)" />
 
         <button id="spinBtn" class="btn spin">🎡 Drehen!</button>
 
