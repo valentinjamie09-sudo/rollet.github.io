@@ -13,25 +13,28 @@
       <div class="balance">💰 Kontostand: <span id="balance">1000</span> Chips</div>
     </header>
 
-    <div class="game">
-      <div class="wheel-wrap">
-        <canvas id="wheel"></canvas>
-        <div class="ball"></div>
+    <main>
+      <div class="roulette-section">
+        <canvas id="wheel" width="400" height="400"></canvas>
+        <div id="ball"></div>
       </div>
 
-      <div class="panel">
-        <h3>Willkommen beim Roulette Classic!</h3>
-        <label>Dein Einsatz:</label>
-        <input type="number" id="bet" min="1" value="5" />
-        <div class="buttons">
-          <button id="betRed" class="btn red">Rot</button>
-          <button id="betBlack" class="btn black">Schwarz</button>
+      <div class="control-section">
+        <h2>Willkommen beim Roulette Classic!</h2>
+
+        <label for="bet">Dein Einsatz:</label>
+        <input type="number" id="bet" value="5" min="1" />
+
+        <div class="color-buttons">
+          <button id="redBtn" class="btn red">Rot</button>
+          <button id="blackBtn" class="btn black">Schwarz</button>
         </div>
-        <p>Oder wähle eine Zahl:</p>
-        <button id="spin" class="spin-btn">🎡 Drehen!</button>
-        <div id="result" class="result"> </div>
+
+        <button id="spinBtn" class="btn spin">🎡 Drehen!</button>
+
+        <div id="result"></div>
       </div>
-    </div>
+    </main>
   </div>
 
   <script src="script.js"></script>
