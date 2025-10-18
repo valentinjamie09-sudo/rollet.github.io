@@ -45,6 +45,7 @@ function drawWheel(){
 
 drawWheel();
 
+// Zahlenfeld erzeugen
 const grid = document.getElementById('numbersGrid');
 for(let i=0;i<=36;i++){
   const btn = document.createElement('div');
@@ -65,8 +66,17 @@ function selectNumber(el){
   document.getElementById('message').textContent = 'Gewählt: Zahl '+selectedNumber;
 }
 
-document.getElementById('betRed').addEventListener('click', ()=>{selectedColor='red';selectedNumber=null;document.querySelectorAll('.num').forEach(n=>n.style.outline='');document.getElementById('message').textContent='Gewählt: Rot';});
-document.getElementById('betBlack').addEventListener('click', ()=>{selectedColor='black';selectedNumber=null;document.querySelectorAll('.num').forEach(n=>n.style.outline='');document.getElementById('message').textContent='Gewählt: Schwarz';});
+document.getElementById('betRed').addEventListener('click', ()=>{
+  selectedColor='red';selectedNumber=null;
+  document.querySelectorAll('.num').forEach(n=>n.style.outline='');
+  document.getElementById('message').textContent='Gewählt: Rot';
+});
+
+document.getElementById('betBlack').addEventListener('click', ()=>{
+  selectedColor='black';selectedNumber=null;
+  document.querySelectorAll('.num').forEach(n=>n.style.outline='');
+  document.getElementById('message').textContent='Gewählt: Schwarz';
+});
 
 let balance = 1000;
 const balanceEl = document.getElementById('balance');
@@ -91,18 +101,23 @@ function spin(){
   if(bet<=0){ resultBox.textContent='Setze einen gültigen Betrag.'; return; }
   if(bet>balance){ resultBox.textContent='Nicht genug Chips.'; return; }
   if(!selectedColor && selectedNumber===null){ resultBox.textContent='Wähle Rot/Schwarz oder eine Zahl.'; return; }
+
   spinning=true; resultBox.textContent='Dreht...'; balance-=bet; refreshBalance();
+
   const minTurns=4,maxTurns=7,seg=numbersOrder.length,segDeg=360/seg;
   const targetIndex=Math.floor(Math.random()*seg);
   const targetAngle=-(targetIndex*segDeg+segDeg/2)+(Math.random()*(segDeg-2)-(segDeg-2)/2);
   const turns=(Math.random()*(maxTurns-minTurns)+minTurns);
   const finalAngle=turns*360+targetAngle;
+
   canvas.style.transition='transform 4s cubic-bezier(.12,.9,.24,1)';
   canvas.style.transform='rotate('+finalAngle+'deg)';
+
   const ball=document.getElementById('ball');
   ball.style.transition='right 4s cubic-bezier(.12,.9,.24,1)';
   ball.style.right='18px';
   setTimeout(()=>{ball.style.right='46px';},4000);
+
   setTimeout(()=>{
     canvas.style.transition='';
     const landedIndex=getWinningIndexFromAngle(finalAngle);
@@ -116,7 +131,17 @@ function spin(){
       if(selectedColor===landedColor){payout=bet*2;message='Gewonnen! Farbe '+landedColor+' — Auszahlung: '+payout+' Chips';}
       else{message='Verloren. Gewonnen wurde Zahl '+landedNumber+' ('+landedColor+').';}
     }
-    balance+=payout;refreshBalance();resultBox.textContent=message;selectedNumber=null;selectedColor=null;document.querySelectorAll('.num').forEach(n=>n.style.outline='');document.getElementById('message').textContent='';const normalized=finalAngle%360;canvas.style.transform='rotate('+normalized+'deg)';spinning=false;},4200);
+    balance+=payout;
+    refreshBalance();
+    resultBox.textContent=message;
+    selectedNumber=null;
+    selectedColor=null;
+    document.querySelectorAll('.num').forEach(n=>n.style.outline='');
+    document.getElementById('message').textContent='';
+    const normalized=finalAngle%360;
+    canvas.style.transform='rotate('+normalized+'deg)';
+    spinning=false;
+  },4200);
 }
 
 spinBtn.addEventListener('click',spin);
