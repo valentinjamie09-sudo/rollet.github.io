@@ -1,4 +1,48 @@
-// Alte Dreh-Logik ersetzen:
+const wheel = document.getElementById("wheel");
+const spinBtn = document.getElementById("spinBtn");
+const balanceEl = document.getElementById("balance");
+const resultEl = document.getElementById("result");
+const betInput = document.getElementById("bet");
+
+let balance = 1000;
+let selectedColor = null;
+let selectedNumber = null;
+
+// Nummern-Buttons generieren
+const numberGrid = document.getElementById("numberGrid");
+for (let i = 0; i <= 36; i++) {
+  const btn = document.createElement("button");
+  btn.textContent = i;
+  btn.style.backgroundColor = i === 0 ? "green" : (isRed(i) ? "red" : "black");
+  btn.style.color = "#fff";
+  btn.onclick = () => {
+    selectedNumber = i;
+    highlightSelectedNumber(i);
+  };
+  numberGrid.appendChild(btn);
+}
+
+function highlightSelectedNumber(num) {
+  const buttons = numberGrid.querySelectorAll("button");
+  buttons.forEach(btn => {
+    btn.style.border = "none";
+    if (parseInt(btn.textContent) === num) {
+      btn.style.border = "2px solid yellow";
+    }
+  });
+}
+
+// Farbwahl
+document.getElementById("red").onclick = () => selectedColor = "red";
+document.getElementById("black").onclick = () => selectedColor = "black";
+
+// Farbe von Zahlen (vereinfachte Version)
+function isRed(num) {
+  const redNumbers = [1,3,5,7,9,12,14,16,18,19,21,23,25,27,30,32,34,36];
+  return redNumbers.includes(num);
+}
+
+// Dreh-Funktion
 spinBtn.onclick = () => {
   const bet = parseInt(betInput.value);
   if (bet > balance || bet <= 0) {
@@ -9,7 +53,7 @@ spinBtn.onclick = () => {
   const result = Math.floor(Math.random() * 37);
   const degreesPerSlot = 360 / 37;
   const randomOffset = Math.floor(Math.random() * degreesPerSlot);
-  const angle = (360 * 5) + ((36 - result) * degreesPerSlot + randomOffset); // rückwärts gezählt, da CSS im Uhrzeigersinn läuft
+  const angle = (360 * 5) + ((36 - result) * degreesPerSlot + randomOffset);
 
   wheel.style.transition = "transform 4s ease-out";
   wheel.style.transform = `rotate(${angle}deg)`;
@@ -40,4 +84,4 @@ spinBtn.onclick = () => {
 
     balanceEl.textContent = balance;
   }, 4000);
-};
+};  
