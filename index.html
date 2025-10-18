@@ -2,19 +2,30 @@
 <html lang="de">
 <head>
   <meta charset="UTF-8">
-  <title>Roulette Spiel</title>
+  <title>Mimo Roulette</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <h1>Roulette Spiel</h1>
-  <div class="roulette-section">
-    <div id="roulette-wheel-container">
-      <!-- Das Rad wird per JS hier eingefügt -->
-      <div id="roulette-pointer"></div>
+  <div class="container">
+    <h1>Mimo Roulette</h1>
+    <p>Kontostand: <span id="balance">1000</span> Chips</p>
+
+    <div class="roulette-wheel" id="wheel"></div>
+
+    <div class="controls">
+      <label for="bet">Dein Einsatz:</label>
+      <input type="number" id="bet" value="10" min="1">
+      <div>
+        <button id="red">Rot</button>
+        <button id="black">Schwarz</button>
+      </div>
+      <div class="number-grid" id="numberGrid"></div>
+      <button id="spinBtn">🎰 Drehen!</button>
     </div>
-    <button id="spin-btn">Drehen</button>
-    <div id="roulette-result"></div>
+
+    <p id="result"></p>
   </div>
+
   <script src="script.js"></script>
 </body>
 </html>
