@@ -25,52 +25,56 @@ body {
 }
 
 .container {
-  width: 900px;
-  max-width: 98%;
-  padding: 20px;
+  width: 100%;
+  max-width: 900px;
+  padding: 16px;
 }
 
 header {
   display: flex;
   align-items: center;
-  gap: 14px;
+  gap: 10px;
+  flex-wrap: wrap;
 }
 
 header h1 {
   font-size: 22px;
   font-weight: 700;
-  letter-spacing: 0.4px;
 }
 
 header .balance {
   margin-left: auto;
   color: var(--muted);
+  font-size: 15px;
 }
 
 .card {
   background: linear-gradient(180deg, #161616 0, #111 100%);
   border-radius: 8px;
-  padding: 18px;
+  padding: 16px;
   border: 1px solid #222;
+  margin-top: 10px;
 }
 
 .top {
   display: flex;
-  gap: 18px;
+  flex-direction: row;
+  gap: 16px;
+  justify-content: center;
+  flex-wrap: wrap;
 }
 
 .wheel-wrap {
-  flex: 0 0 460px;
+  flex: 1 1 420px;
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 12px;
+  justify-content: center;
 }
 
 .wheel-stage {
   position: relative;
-  width: 420px;
-  height: 420px;
+  width: 100%;
+  max-width: 420px;
+  aspect-ratio: 1;
   border-radius: 50%;
   display: flex;
   align-items: center;
@@ -78,24 +82,28 @@ header .balance {
 }
 
 canvas#wheel {
+  width: 100%;
+  height: auto;
   border-radius: 50%;
+  touch-action: none;
 }
 
 .ball {
   position: absolute;
-  right: 46px;
-  top: 50%;
-  width: 18px;
-  height: 18px;
+  width: 4%;
+  aspect-ratio: 1;
   border-radius: 50%;
   background: #fff;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.6);
+  right: 8%;
+  top: 50%;
+  transform: translateY(-50%);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.6);
 }
 
 .wheel-center {
   position: absolute;
-  width: 60px;
-  height: 60px;
+  width: 14%;
+  aspect-ratio: 1;
   border-radius: 50%;
   background: var(--gold);
   display: flex;
@@ -103,10 +111,11 @@ canvas#wheel {
   justify-content: center;
   font-weight: 700;
   color: #111;
+  font-size: clamp(16px, 3vw, 24px);
 }
 
 .controls {
-  flex: 1;
+  flex: 1 1 320px;
   display: flex;
   flex-direction: column;
   gap: 12px;
@@ -119,21 +128,32 @@ canvas#wheel {
   padding: 10px;
   text-align: center;
   color: var(--muted);
+  font-size: 14px;
 }
 
 .bet-row {
   display: flex;
-  gap: 12px;
+  gap: 10px;
   align-items: center;
+  flex-wrap: wrap;
+  justify-content: center;
 }
 
 .bet-row input[type=number] {
-  width: 120px;
+  width: 100px;
   padding: 8px;
   border-radius: 4px;
   border: 1px solid #222;
   background: #0b0b0b;
   color: #fff;
+  text-align: center;
+}
+
+.btn-group {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  flex-wrap: wrap;
 }
 
 .btn {
@@ -161,6 +181,7 @@ canvas#wheel {
   padding: 12px 20px;
   font-size: 16px;
   border-radius: 6px;
+  width: 100%;
 }
 
 .result {
@@ -169,13 +190,26 @@ canvas#wheel {
   border-radius: 6px;
   background: #0b0b0b;
   color: var(--muted);
+  text-align: center;
 }
 
-@media (max-width: 920px) {
+@media (max-width: 600px) {
   .top {
     flex-direction: column;
+    align-items: center;
   }
+
+  header {
+    flex-direction: column;
+    align-items: center;
+  }
+
   .wheel-wrap {
-    order: 0;
+    width: 100%;
+  }
+
+  .controls {
+    width: 100%;
+    align-items: center;
   }
 }
