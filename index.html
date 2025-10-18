@@ -1,17 +1,61 @@
 <!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <link rel="icon" type="image/x-icon" href="/favicon.ico" />
-    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
-    <link rel="manifest" href="/site.webmanifest" />
-    <meta name="theme-color" content="#ffffff" />
-    <title>Instance app</title>
-  </head>
-  <body>
-    <div id="root" class="contents"></div>
-    <script type="module" src="/src/main.tsx"></script>
-  </body>
+<html lang="de">
+<head>
+  <meta charset="utf-8" />
+  <title>Roulette (Europäisch) — Demo</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>Roulette — Demo (Europäisch, Single Zero)</h1>
+      <div class="balance">Balance: <span id="balance">1000</span> €</div>
+    </header>
+
+    <div class="wheel" id="wheel">
+      <div id="wheel-label" class="small">Warte auf Dreh...</div>
+      <div class="ball" id="ball" style="display:none"></div>
+    </div>
+
+    <div class="controls">
+      <label class="small">Wettauswahl:
+        <select id="bet-type">
+          <option value="straight">Straight (Zahl)</option>
+          <option value="red">Red</option>
+          <option value="black">Black</option>
+          <option value="even">Even</option>
+          <option value="odd">Odd</option>
+          <option value="low">1-18</option>
+          <option value="high">19-36</option>
+          <option value="column">Column (1/2/3)</option>
+          <option value="dozen">Dozen (1/2/3)</option>
+        </select>
+      </label>
+
+      <label class="small">Wert:
+        <input type="number" id="bet-value" min="0" value="0" />
+      </label>
+
+      <label class="small">Einsatz (€):
+        <input type="number" id="bet-amount" min="1" value="10" />
+      </label>
+
+      <button id="add-bet">Wette hinzufügen</button>
+      <button id="spin">Drehen</button>
+      <div class="status small" id="status">Bereit</div>
+    </div>
+
+    <div class="bet-list" id="bet-list"><strong>Aktuelle Wetten:</strong><div id="bets-empty" class="small">Keine</div></div>
+
+    <div class="log" id="log"></div>
+
+    <footer class="small">
+      <div>Fairness: kryptographisch sichere Zufallsfunktion (`crypto.getRandomValues`) wird verwendet.</div>
+      <div style="margin-top:6 px">Disclaimer: Diese Anwendung ist eine Lern‑/Demonstrationssimulation. Kein Echtgeld.</div>
+    </footer>
+  </div>
+
+  <script src="script.js"></script>
+</body>
 </html>
