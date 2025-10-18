@@ -10,43 +10,35 @@
   <div class="container">
     <header>
       <h1>🎰 Roulette Classic</h1>
-      <div class="balance">
-        💰 Kontostand: <span id="balance">1000</span> Chips
-      </div>
+      <div class="balance">💰 Kontostand: <span id="balance">1000</span> Chips</div>
     </header>
 
-    <div class="card top">
-      <div class="wheel-wrap">
-        <div class="wheel-stage">
-          <canvas id="wheel" width="420" height="420"></canvas>
-          <div class="wheel-center">▼</div>
-          <div id="ball" class="ball"></div>
-        </div>
-      </div>
-
-      <div class="controls">
-        <div class="welcome">Willkommen beim Roulette Classic!</div>
-        <div class="bet-row">
-          <label for="betAmount">Dein Einsatz:</label>
-          <input type="number" id="betAmount" value="10" min="1">
-          <button class="btn btn-red" id="betRed">Rot</button>
-          <button class="btn btn-black" id="betBlack">Schwarz</button>
-        </div>
-        <p id="message" class="message"></p>
-
-        <div class="numbers-section">
-          <p>Oder wähle eine Zahl:</p>
-          <div id="numbersGrid" class="numbers-grid"></div>
+    <div class="card">
+      <div class="top">
+        <div class="wheel-wrap">
+          <div class="wheel-stage">
+            <canvas id="wheel" width="420" height="420"></canvas>
+            <div class="ball" id="ball"></div>
+            <div class="wheel-center">▼</div>
+          </div>
         </div>
 
-        <button id="spinBtn" class="btn btn-spin">🎡 Drehen!</button>
-        <div id="resultBox" class="result"></div>
+        <div class="controls">
+          <div class="welcome">Willkommen beim Roulette Classic!</div>
+          <div class="bet-row">
+            <label>Dein Einsatz:</label>
+            <input type="number" id="bet" min="1" max="1000" value="5">
+            <button id="bet-red" class="btn btn-red">Rot</button>
+            <button id="bet-black" class="btn btn-black">Schwarz</button>
+          </div>
+
+          <div class="numbers-label">Oder wähle eine Zahl:</div>
+
+          <button id="spin" class="btn btn-spin">🎡 Drehen!</button>
+          <div id="result" class="result"></div>
+        </div>
       </div>
     </div>
-
-    <footer>
-      <p>Nur zum Spaß — kein echtes Glücksspiel.</p>
-    </footer>
   </div>
 
   <script src="script.js"></script>
