@@ -6,7 +6,7 @@
 body{margin:0;background:var(--bg);color:#fff;display:flex;align-items:center;justify-content:center;min-height:100vh}
 .container{width:900px;max-width:98%;padding:20px}
 header{display:flex;align-items:center;gap:14px}
-header .title{font-size:22px;font-weight:700;letter-spacing:0.4px}
+header h1{font-size:22px;font-weight:700;letter-spacing:0.4px;margin:0}
 header .balance{margin-left:auto;color:var(--muted);display:flex;align-items:center;gap:8px}
 .card{background:linear-gradient(180deg,#161616 0,#111 100%);border-radius:8px;padding:18px;border:1px solid #222}
 .top{display:flex;gap:18px}
@@ -22,7 +22,7 @@ canvas#wheel{border-radius:50%}
 .btn{padding:10px 16px;border-radius:6px;border:0;cursor:pointer;font-weight:700}
 .btn-red{background:var(--red);color:#fff}
 .btn-black{background:#0b0b0b;color:#fff;border:1px solid #222}
-.btn-spin{background:var(--accent);color:#fff;padding:12px 20px;font-size:16px;border-radius:6px}
+.btn-spin{background:var(--accent);color:#fff;padding:12px 20px;font-size:16px;border-radius:6px;margin-top:10px}
 .numbers-grid{display:grid;grid-template-columns:repeat(12,1fr);gap:10px;margin-top:14px}
 .num{height:40px;display:flex;align-items:center;justify-content:center;border-radius:4px;background:#0b0b0b;border:1px solid #222;color:#fff;cursor:pointer}
 .num.green{background:var(--green);color:#04291f}
