@@ -26,15 +26,19 @@
 
         <div class="controls">
           <div class="welcome">Willkommen beim Roulette Classic!</div>
+
           <div class="bet-row">
             <label>Dein Einsatz:</label>
             <input type="number" id="bet" min="1" max="1000" value="5">
+          </div>
+
+          <div class="color-bets">
             <button id="bet-red" class="btn btn-red">Rot</button>
             <button id="bet-black" class="btn btn-black">Schwarz</button>
           </div>
 
-          <div class="numbers-label">Oder wähle eine Zahl (0–36):</div>
-          <input type="number" id="numberBet" min="0" max="36" placeholder="Zahl eingeben">
+          <div class="numbers-label">Oder wähle eine Zahl:</div>
+          <div class="number-grid" id="number-grid"></div>
 
           <button id="spin" class="btn btn-spin">🎡 Drehen!</button>
           <div id="result" class="result"></div>
