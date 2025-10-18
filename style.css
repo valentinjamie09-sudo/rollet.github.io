@@ -1,51 +1,87 @@
-const wheel = document.getElementById("wheel");
-const spinBtn = document.getElementById("spinBtn");
-const balanceEl = document.getElementById("balance");
-const resultEl = document.getElementById("result");
-const betInput = document.getElementById("bet");
+// Roulette Zahlen (europäisch)
+const numbers = [
+  "0", "32", "15", "19", "4", "21", "2", "25", "17", "34", "6", "27",
+  "13", "36", "11", "30", "8", "23", "10", "5", "24", "16", "33", "1",
+  "20", "14", "31", "9", "22", "18", "29", "7", "28", "12", "35", "3", "26"
+];
+const SECTOR_ANGLE = 360 / numbers.length;
 
-let balance = 1000;
-let selectedColor = null;
-let selectedNumber = null;
-
-// Nummern generieren
-const numberGrid = document.getElementById("numberGrid");
-for (let i = 0; i <= 36; i++) {
-  const btn = document.createElement("button");
-  btn.textContent = i;
-  btn.classList.add(
-    i === 0 ? "green" : isRed(i) ? "red" : "black"
-  );
-  btn.onclick = () => {
-    selectedNumber = i;
-    highlightSelectedNumber(i);
-    spinBtn.disabled = false;
+function polarToCartesian(cx, cy, r, angle) {
+  const rad = (angle - 90) * (Math.PI / 180.0);
+  return {
+    x: cx + (r * Math.cos(rad)),
+    y: cy + (r * Math.sin(rad))
   };
-  numberGrid.appendChild(btn);
 }
 
-function highlightSelectedNumber(num) {
-  document.querySelectorAll(".number-grid button").forEach(btn => {
-    btn.classList.remove("selected");
-    if (parseInt(btn.textContent) === num) {
-      btn.classList.add("selected");
-    }
+// SVG-Pfad für ein Sektor
+function describeArc(x, y, radius, startAngle, endAngle) {
+  const start = polarToCartesian(x, y, radius, endAngle);
+  const end = polarToCartesian(x, y, radius, startAngle);
+  const largeArcFlag = endAngle - startAngle <= 180 ? "0" : "1";
+  return [
+    "M", x, y,
+    "L", start.x, start.y,
+    "A", radius, radius, 0, largeArcFlag, 0, end.x, end.y,
+    "Z"
+  ].join(" ");
+}
+
+// Rad in SVG bauen
+function buildRouletteSVG() {
+  const size = 360;
+  const r = 170;
+  let svg = `<svg id="roulette-svg" width="${size}" height="${size}" viewBox="0 0 ${size} ${size}">`;
+  for (let i = 0; i < numbers.length; i++) {
+    const start = i * SECTOR_ANGLE;
+    const end = start + SECTOR_ANGLE;
+    svg += `<path d="${describeArc(size/2, size/2, r, start, end)}" fill="${i % 2 === 0 ? '#e63946' : '#222'}"/>`;
+
+    // Zahlen platzieren
+    const angle = start + SECTOR_ANGLE / 2;
+    const pos = polarToCartesian(size/2, size/2, r - 30, angle);
+    svg += `<text x="${pos.x}" y="${pos.y}" text-anchor="middle" dominant-baseline="middle"
+             fill="#fff" font-size="17" transform="rotate(${angle},${pos.x},${pos.y})">${numbers[i]}</text>`;
+  }
+  svg += "</svg>";
+  return svg;
+}
+
+function getRandomInt(max) {
+  return Math.floor(Math.random() * max);
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+  const container = document.getElementById("roulette-wheel-container");
+  container.insertAdjacentHTML("afterbegin", buildRouletteSVG());
+  const wheelSVG = container.querySelector("#roulette-svg");
+  const spinBtn = document.getElementById("spin-btn");
+  const resultDiv = document.getElementById("roulette-result");
+
+  let spinning = false;
+  let currentRotation = 0;
+
+  spinBtn.addEventListener("click", () => {
+    if (spinning) return;
+    spinning = true;
+    resultDiv.textContent = "";
+    spinBtn.disabled = true;
+
+    // Zufälliges Feld bestimmen
+    const winningIndex = getRandomInt(numbers.length);
+    const extraRotations = 5;
+    const targetDeg = 360 * extraRotations + (360 - winningIndex * SECTOR_ANGLE) + SECTOR_ANGLE / 2;
+
+    // Animations-Start
+    wheelSVG.style.transition = "transform 4s cubic-bezier(.17,.67,.83,.67)";
+    wheelSVG.style.transform = `rotate(${targetDeg + currentRotation}deg)`;
+
+    setTimeout(() => {
+      spinning = false;
+      // Aktuelle Rotation für nächste Animation merken
+      currentRotation = (targetDeg + currentRotation) % 360;
+      resultDiv.textContent = `Ergebnis: ${numbers[winningIndex]}`;
+      spinBtn.disabled = false;
+    }, 4000);
   });
-}
-
-// Farbwahl
-document.getElementById("redBtn").onclick = () => {
-  selectedColor = "red";
-  selectedNumber = null;
-  spinBtn.disabled = false;
-  highlightSelectedNumber(-1);
-};
-document.getElementById("blackBtn").onclick = () => {
-  selectedColor = "black";
-  selectedNumber = null;
-  spinBtn.disabled = false;
-  highlightSelectedNumber(-1);
-};
-
-function isRed(n) {
-  return [1,3,5,7,9,12,14,16,18,19,21,23,25,27,
+});
