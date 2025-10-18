@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Roulette Classic</title>
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
   <div class="container">
@@ -29,7 +29,7 @@
 
           <div class="bet-row">
             <label>Dein Einsatz:</label>
-            <input type="number" id="bet" min="1" max="1000" value="5">
+            <input type="number" id="bet" min="1" max="1000" value="5" />
           </div>
 
           <div class="color-bets">
@@ -37,7 +37,7 @@
             <button id="bet-black" class="btn btn-black">Schwarz</button>
           </div>
 
-          <div class="numbers-label">Oder wähle eine Zahl:</div>
+          <div class="numbers-label">Oder wähle eine Zahl (0–36):</div>
           <div class="number-grid" id="number-grid"></div>
 
           <button id="spin" class="btn btn-spin">🎡 Drehen!</button>
@@ -47,6 +47,7 @@
     </div>
   </div>
 
-  <script src="script.js"></script>
+  <!-- Wichtig: Skript am Ende laden -->
+  <script src="./script.js"></script>
 </body>
 </html>
