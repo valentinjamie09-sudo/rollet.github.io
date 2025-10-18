@@ -1,56 +1,52 @@
-<!-- index.html -->
-<!doctype html>
+<!DOCTYPE html>
 <html lang="de">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Mimo Roulette</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Roulette Classic</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
   <div class="container">
-    <div class="card">
-      <header>
-        <div class="title">🎰 Mimo Roulette</div>
-        <div class="balance">💰 Kontostand: <strong id="balance">1000</strong> Chips</div>
-      </header>
+    <header>
+      <h1>🎰 Roulette Classic</h1>
+      <div class="balance">
+        💰 Kontostand: <span id="balance">1000</span> Chips
+      </div>
+    </header>
 
-      <div class="top">
-        <div class="wheel-wrap">
-          <div class="wheel-stage">
-            <canvas id="wheel" width="420" height="420"></canvas>
-            <div class="ball" id="ball"></div>
-            <div class="wheel-center">🔔</div>
-          </div>
-          <div class="welcome-text">Willkommen beim Mimo Roulette!</div>
-        </div>
-
-        <div class="controls">
-          <div class="welcome">Setze Chips und wähle Rot, Schwarz oder eine Zahl.</div>
-
-          <div class="bet-row">
-            <input id="betAmount" type="number" min="1" value="10">
-            <button class="btn btn-red" id="betRed">Rot</button>
-            <button class="btn btn-black" id="betBlack">Schwarz</button>
-          </div>
-
-          <div class="number-label">Oder wähle eine Zahl:</div>
-          <div class="numbers-grid" id="numbersGrid"></div>
-
-          <div class="spin-area">
-            <button id="spinBtn" class="btn btn-spin">🎡 Drehen!</button>
-            <div id="message"></div>
-          </div>
-
-          <div class="result" id="resultBox">Nichts gespielt.</div>
+    <div class="card top">
+      <div class="wheel-wrap">
+        <div class="wheel-stage">
+          <canvas id="wheel" width="420" height="420"></canvas>
+          <div class="wheel-center">▼</div>
+          <div id="ball" class="ball"></div>
         </div>
       </div>
 
-      <footer>
-        <div>Viel Spaß — nur zum Vergnügen.</div>
-        <div>© Mimo</div>
-      </footer>
+      <div class="controls">
+        <div class="welcome">Willkommen beim Roulette Classic!</div>
+        <div class="bet-row">
+          <label for="betAmount">Dein Einsatz:</label>
+          <input type="number" id="betAmount" value="10" min="1">
+          <button class="btn btn-red" id="betRed">Rot</button>
+          <button class="btn btn-black" id="betBlack">Schwarz</button>
+        </div>
+        <p id="message" class="message"></p>
+
+        <div class="numbers-section">
+          <p>Oder wähle eine Zahl:</p>
+          <div id="numbersGrid" class="numbers-grid"></div>
+        </div>
+
+        <button id="spinBtn" class="btn btn-spin">🎡 Drehen!</button>
+        <div id="resultBox" class="result"></div>
+      </div>
     </div>
+
+    <footer>
+      <p>Nur zum Spaß — kein echtes Glücksspiel.</p>
+    </footer>
   </div>
 
   <script src="script.js"></script>
