@@ -1,135 +1,196 @@
+:root {
+  --bg: #0f0f10;
+  --panel: #161616;
+  --muted: #9aa0a6;
+  --accent: #1e3a8a;
+  --red: #b32020;
+  --black: #0b0b0b;
+  --green: #0aa46a;
+  --gold: #c58a17;
+}
+
+* {
+  box-sizing: border-box;
+  font-family: Inter, Segoe UI, Arial, sans-serif;
+}
+
 body {
-  background-color: #111;
-  color: #eee;
-  font-family: 'Segoe UI', sans-serif;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 100vh;
   margin: 0;
+  background: var(--bg);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
 }
 
 .container {
-  width: 95%;
-  max-width: 900px;
-  background: #1c1c1c;
+  width: 900px;
+  max-width: 98%;
   padding: 20px;
-  border-radius: 15px;
-  box-shadow: 0 0 15px rgba(255, 255, 255, 0.05);
 }
 
 header {
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  margin-bottom: 20px;
+  gap: 14px;
 }
 
 header h1 {
-  color: white;
+  font-size: 22px;
+  font-weight: 700;
+  letter-spacing: 0.4px;
 }
 
-.balance {
-  color: #ffc107;
+header .balance {
+  margin-left: auto;
+  color: var(--muted);
 }
 
-main {
+.card {
+  background: linear-gradient(180deg, #161616 0, #111 100%);
+  border-radius: 8px;
+  padding: 18px;
+  border: 1px solid #222;
+}
+
+.top {
   display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 30px;
-  align-items: center;
+  gap: 18px;
 }
 
-.wheel-container {
+.wheel-wrap {
+  flex: 0 0 460px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+
+.wheel-stage {
   position: relative;
-  width: 320px;
-  height: 320px;
+  width: 420px;
+  height: 420px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+canvas#wheel {
+  border-radius: 50%;
 }
 
 .pointer {
   position: absolute;
-  top: -12px;
+  top: -16px;
   left: 50%;
   transform: translateX(-50%);
   width: 0;
   height: 0;
   border-left: 12px solid transparent;
   border-right: 12px solid transparent;
-  border-bottom: 18px solid yellow;
+  border-bottom: 20px solid var(--gold);
   z-index: 10;
 }
 
-#wheel {
+.ball {
+  position: absolute;
+  width: 16px;
+  height: 16px;
+  background: white;
   border-radius: 50%;
-  background: #222;
-  border: 6px solid #a87900;
+  box-shadow: 0 0 6px rgba(0, 0, 0, 0.7);
+  top: 10px;
+  left: 50%;
+  transform: translate(-50%, 0);
+  z-index: 5;
 }
 
-.control-section {
-  text-align: center;
+.wheel-center {
+  position: absolute;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background: var(--gold);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  color: #111;
+}
+
+.controls {
   flex: 1;
-  min-width: 250px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 4px;
 }
 
-input[type="number"] {
-  width: 100px;
-  padding: 5px;
-  border-radius: 5px;
-  border: none;
-  margin: 5px;
+.welcome {
+  background: #171717;
+  border-radius: 4px;
+  padding: 10px;
   text-align: center;
+  color: var(--muted);
+}
+
+.bet-row {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+.bet-row input[type=number] {
+  width: 120px;
+  padding: 8px;
+  border-radius: 4px;
+  border: 1px solid #222;
+  background: #0b0b0b;
+  color: #fff;
 }
 
 .btn {
-  border: none;
-  padding: 10px 20px;
-  border-radius: 8px;
-  font-size: 1rem;
-  margin: 5px;
+  padding: 10px 16px;
+  border-radius: 6px;
+  border: 0;
   cursor: pointer;
-  transition: 0.3s;
+  font-weight: 700;
 }
 
-.red {
-  background-color: #e63946;
-  color: white;
+.btn-red {
+  background: var(--red);
+  color: #fff;
 }
 
-.black {
-  background-color: #000;
-  color: white;
+.btn-black {
+  background: #0b0b0b;
+  color: #fff;
+  border: 1px solid #222;
 }
 
-.spin {
-  background-color: #1e40af;
-  color: white;
-  font-weight: bold;
+.btn-spin {
+  background: var(--accent);
+  color: #fff;
+  padding: 12px 20px;
+  font-size: 16px;
+  border-radius: 6px;
 }
 
-.btn:hover {
-  transform: scale(1.05);
+.result {
+  margin-top: 10px;
+  padding: 10px;
+  border-radius: 6px;
+  background: #0b0b0b;
+  color: var(--muted);
 }
 
-#result {
-  margin-top: 15px;
-  font-size: 1.1rem;
-  color: #ccc;
-}
-
-/* Handy Ansicht */
-@media (max-width: 700px) {
-  main {
+@media (max-width: 920px) {
+  .top {
     flex-direction: column;
   }
-
-  .wheel-container {
-    width: 260px;
-    height: 260px;
-  }
-
-  #wheel {
-    width: 260px;
-    height: 260px;
+  .wheel-wrap {
+    order: 0;
   }
 }
