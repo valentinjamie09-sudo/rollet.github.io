@@ -1,36 +1,146 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-    <meta charset="UTF-8">
-    <title>Mimo Roulette</title>
-    <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8">
+  <title>Glücksrad mit Einsatz</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #f2f2f2;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding-top: 50px;
+    }
+
+    h1 {
+      color: #333;
+    }
+
+    .wheel-container {
+      position: relative;
+      width: 300px;
+      height: 300px;
+      margin: 20px 0;
+    }
+
+    .wheel {
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      border: 5px solid #444;
+      background: conic-gradient(
+        #FF6B6B 0deg 45deg,
+        #FFD93D 45deg 90deg,
+        #6BCB77 90deg 135deg,
+        #4D96FF 135deg 180deg,
+        #FF6B6B 180deg 225deg,
+        #FFD93D 225deg 270deg,
+        #6BCB77 270deg 315deg,
+        #4D96FF 315deg 360deg
+      );
+      transition: transform 4s ease-out;
+    }
+
+    .pointer {
+      position: absolute;
+      top: -20px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 0;
+      height: 0;
+      border-left: 20px solid transparent;
+      border-right: 20px solid transparent;
+      border-bottom: 30px solid red;
+      z-index: 10;
+    }
+
+    #spinButton {
+      padding: 12px 25px;
+      font-size: 18px;
+      background-color: #4D96FF;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    #spinButton:hover {
+      background-color: #2563eb;
+    }
+
+    #result {
+      margin-top: 30px;
+      font-size: 24px;
+      font-weight: bold;
+      color: #222;
+    }
+
+    #einsatz {
+      margin-top: 10px;
+      padding: 8px;
+      font-size: 16px;
+      width: 200px;
+      text-align: center;
+    }
+  </style>
 </head>
 <body>
-    <div class="container">
-        <h1>🎰 Mimo Roulette 🎰</h1>
-        <p>💰 Kontostand: <span id="balance">1000</span> Chips</p>
-        
-        <div class="roulette-wheel">
-            <div class="circle">🎡</div>
-        </div>
 
-        <div class="betting">
-            <label for="bet">Dein Einsatz:</label>
-            <input type="number" id="bet" min="1" max="1000" value="10">
+  <h1>🎡 Glücksrad mit Einsatz</h1>
 
-            <div class="buttons">
-                <button id="red">Rot</button>
-                <button id="black">Schwarz</button>
-            </div>
+  <input type="text" id="einsatz" placeholder="Einsatz (z.B. 2 Coins)">
+  
+  <div class="wheel-container">
+    <div class="pointer"></div>
+    <div class="wheel" id="wheel"></div>
+  </div>
 
-            <p>Oder wähle eine Zahl:</p>
-            <div class="numbers" id="numberGrid"></div>
-        </div>
+  <button id="spinButton">Drehen!</button>
 
-        <button id="spin" class="spin-button">🎯 Drehen!</button>
-        <p id="result"></p>
-    </div>
+  <div id="result"></div>
 
-    <script src="script.js"></script>
+  <script>
+    const wheel = document.getElementById('wheel');
+    const result = document.getElementById('result');
+    const einsatzInput = document.getElementById('einsatz');
+
+    const segments = [
+      "🎉 Jackpot",
+      "❌ Niete",
+      "🔁 Noch mal drehen",
+      "🎲 Aufgabe",
+      "💥 Du wählst",
+      "🤝 Teilen",
+      "🔒 Safe",
+      "🎁 Bonus"
+    ];
+
+    document.getElementById('spinButton').addEventListener('click', () => {
+      const einsatz = einsatzInput.value.trim();
+      if (!einsatz) {
+        alert("Bitte gib einen Einsatz ein!");
+        return;
+      }
+
+      const spins = Math.floor(Math.random() * 4) + 4; // 4–7 Umdrehungen
+      const degree = spins * 360 + Math.floor(Math.random() * 360);
+      wheel.style.transform = `rotate(${degree}deg)`;
+
+      const normalizedDeg = degree % 360;
+      const segmentSize = 360 / segments.length;
+      const selectedIndex = Math.floor((360 - normalizedDeg) / segmentSize) % segments.length;
+
+      setTimeout(() => {
+        result.innerHTML = `🎯 Ergebnis: <strong>${segments[selectedIndex]}</strong><br>🪙 Einsatz: ${einsatz}`;
+      }, 4100); // nach dem Drehen anzeigen
+    });
+  </script>
+
 </body>
 </html>
