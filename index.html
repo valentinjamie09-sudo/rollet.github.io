@@ -1,31 +1,36 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-  <meta charset="UTF-8">
-  <title>Mimo Roulette</title>
-  <link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8">
+    <title>Mimo Roulette</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <div class="container">
-    <h1>Mimo Roulette</h1>
-    <p>Kontostand: <span id="balance">1000</span> Chips</p>
+    <div class="container">
+        <h1>🎰 Mimo Roulette 🎰</h1>
+        <p>💰 Kontostand: <span id="balance">1000</span> Chips</p>
+        
+        <div class="roulette-wheel">
+            <div class="circle">🎡</div>
+        </div>
 
-    <div class="roulette-wheel" id="wheel"></div>
+        <div class="betting">
+            <label for="bet">Dein Einsatz:</label>
+            <input type="number" id="bet" min="1" max="1000" value="10">
 
-    <div class="controls">
-      <label for="bet">Dein Einsatz:</label>
-      <input type="number" id="bet" value="10" min="1">
-      <div>
-        <button id="red">Rot</button>
-        <button id="black">Schwarz</button>
-      </div>
-      <div class="number-grid" id="numberGrid"></div>
-      <button id="spinBtn">🎰 Drehen!</button>
+            <div class="buttons">
+                <button id="red">Rot</button>
+                <button id="black">Schwarz</button>
+            </div>
+
+            <p>Oder wähle eine Zahl:</p>
+            <div class="numbers" id="numberGrid"></div>
+        </div>
+
+        <button id="spin" class="spin-button">🎯 Drehen!</button>
+        <p id="result"></p>
     </div>
 
-    <p id="result"></p>
-  </div>
-
-  <script src="script.js"></script>
+    <script src="script.js"></script>
 </body>
 </html>
