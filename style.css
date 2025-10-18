@@ -1,87 +1,87 @@
-const wheel = document.getElementById("wheel");
-const spinBtn = document.getElementById("spinBtn");
-const balanceEl = document.getElementById("balance");
-const resultEl = document.getElementById("result");
-const betInput = document.getElementById("bet");
-
-let balance = 1000;
-let selectedColor = null;
-let selectedNumber = null;
-
-// Nummern-Buttons generieren
-const numberGrid = document.getElementById("numberGrid");
-for (let i = 0; i <= 36; i++) {
-  const btn = document.createElement("button");
-  btn.textContent = i;
-  btn.style.backgroundColor = i === 0 ? "green" : (isRed(i) ? "red" : "black");
-  btn.style.color = "#fff";
-  btn.onclick = () => {
-    selectedNumber = i;
-    highlightSelectedNumber(i);
-  };
-  numberGrid.appendChild(btn);
+body {
+    background: #111;
+    color: white;
+    font-family: Arial, sans-serif;
+    text-align: center;
 }
 
-function highlightSelectedNumber(num) {
-  const buttons = numberGrid.querySelectorAll("button");
-  buttons.forEach(btn => {
-    btn.style.border = "none";
-    if (parseInt(btn.textContent) === num) {
-      btn.style.border = "2px solid yellow";
-    }
-  });
+.container {
+    margin: 30px auto;
+    max-width: 500px;
+    padding: 20px;
+    background: #222;
+    border-radius: 10px;
+    box-shadow: 0 0 10px #000;
 }
 
-// Farbwahl
-document.getElementById("red").onclick = () => selectedColor = "red";
-document.getElementById("black").onclick = () => selectedColor = "black";
-
-// Farbe von Zahlen (vereinfacht)
-function isRed(num) {
-  const redNumbers = [1,3,5,7,9,12,14,16,18,19,21,23,25,27,30,32,34,36];
-  return redNumbers.includes(num);
+.roulette-wheel .circle {
+    font-size: 50px;
+    margin: 20px 0;
 }
 
-// Dreh-Funktion
-spinBtn.onclick = () => {
-  const bet = parseInt(betInput.value);
-  if (bet > balance || bet <= 0) {
-    alert("Ungültiger Einsatz!");
-    return;
-  }
+.betting {
+    margin-top: 20px;
+}
 
-  // Zufallszahl (0–36)
-  const result = Math.floor(Math.random() * 37);
-  const angle = 360 * 5 + (result * (360 / 37)); // Rad dreht sich 5x
+input[type="number"] {
+    width: 80px;
+    padding: 5px;
+    font-size: 16px;
+}
 
-  // Rad drehen
-  wheel.style.transform = `rotate(${angle}deg)`;
+.buttons {
+    margin: 10px 0;
+}
 
-  // 4 Sekunden warten (Drehzeit)
-  setTimeout(() => {
-    balance -= bet;
+button {
+    padding: 10px 20px;
+    font-size: 16px;
+    margin: 5px;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+}
 
-    let won = false;
-    let winnings = 0;
+#red {
+    background-color: #c00;
+    color: white;
+}
 
-    if (selectedNumber !== null && result === selectedNumber) {
-      winnings = bet * 36;
-      won = true;
-    } else if (selectedColor && (
-      (selectedColor === "red" && isRed(result)) ||
-      (selectedColor === "black" && !isRed(result) && result !== 0)
-    )) {
-      winnings = bet * 2;
-      won = true;
-    }
+#black {
+    background-color: #000;
+    color: white;
+}
 
-    if (won) {
-      balance += winnings;
-      resultEl.textContent = `Gewonnen! Die Zahl war ${result}. Gewinn: ${winnings} Chips`;
-    } else {
-      resultEl.textContent = `Verloren! Die Zahl war ${result}.`;
-    }
+.spin-button {
+    background-color: #3498db;
+    color: white;
+    margin-top: 20px;
+}
 
-    balanceEl.textContent = balance;
-  }, 4000);
-};
+.numbers {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-top: 10px;
+}
+
+.numbers button {
+    width: 40px;
+    margin: 2px;
+    background-color: #444;
+}
+
+.numbers .red {
+    background-color: red;
+    color: white;
+}
+
+.numbers .black {
+    background-color: black;
+    color: white;
+}
+
+.numbers .green {
+    background-color: green;
+    color: white;
+}
