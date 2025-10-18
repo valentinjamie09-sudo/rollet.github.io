@@ -1,176 +1,154 @@
-:root {
-  --bg: #0f0f10;
-  --panel: #161616;
-  --muted: #9aa0a6;
-  --accent: #1e3a8a;
-  --red: #b32020;
-  --black: #0b0b0b;
-  --green: #0aa46a;
-  --gold: #c58a17;
-}
-
-* {
-  box-sizing: border-box;
-  font-family: Inter, Segoe UI, Arial, sans-serif;
-}
-
+/* Grundlayout */
 body {
+  background-color: #111;
+  color: #f0f0f0;
+  font-family: 'Segoe UI', sans-serif;
   margin: 0;
-  background: var(--bg);
-  color: white;
+  padding: 0;
   display: flex;
-  align-items: center;
   justify-content: center;
+  align-items: center;
   min-height: 100vh;
 }
 
+/* Container */
 .container {
   width: 95%;
-  max-width: 900px;
+  max-width: 1000px;
+  background-color: #1a1a1a;
+  border-radius: 20px;
+  box-shadow: 0 0 15px rgba(255, 255, 255, 0.1);
+  padding: 20px;
 }
 
+/* Header */
 header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 16px;
+  margin-bottom: 20px;
 }
 
-h1 {
-  font-size: 1.5rem;
-  margin: 0;
+header h1 {
+  font-size: 1.8rem;
+  color: #fff;
 }
 
 .balance {
-  color: var(--muted);
+  font-size: 1rem;
+  color: #ffc107;
 }
 
-.game {
+/* Hauptbereich */
+main {
   display: flex;
   flex-wrap: wrap;
-  justify-content: center;
-  gap: 20px;
-  background: #111;
-  border-radius: 10px;
-  padding: 20px;
-  border: 1px solid #222;
-}
-
-/* --- ROULETTE-RAD FIX --- */
-.wheel-wrap {
-  flex: 0 0 auto;
-  width: 380px;
-  height: 380px;
-  display: flex;
-  justify-content: center;
+  justify-content: space-around;
   align-items: center;
+  gap: 20px;
+}
+
+/* Roulette-Rad */
+.roulette-section {
   position: relative;
+  width: 400px;
+  height: 400px;
 }
 
-canvas#wheel {
-  width: 100%;
-  height: 100%;
+#wheel {
   border-radius: 50%;
-  display: block;
-  object-fit: contain;
+  border: 8px solid #c28a00;
+  background-color: #222;
 }
 
-/* Ball bleibt relativ zum Canvas */
-.ball {
+#ball {
   position: absolute;
   width: 18px;
   height: 18px;
   background: white;
   border-radius: 50%;
-  box-shadow: 0 0 10px rgba(255, 255, 255, 0.6);
-  top: 5%;
-  left: 50%;
-  transform: translateX(-50%);
+  top: 10px;
+  left: 190px;
+  transition: transform 4s ease-out;
 }
 
-.panel {
+/* Steuerung */
+.control-section {
   flex: 1;
-  background: var(--panel);
-  border-radius: 8px;
-  padding: 16px;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  min-width: 260px;
+  min-width: 250px;
+  text-align: center;
 }
 
-.panel h3 {
-  margin-top: 0;
-  color: var(--muted);
-  text-align: center;
+.control-section h2 {
+  margin-bottom: 10px;
 }
 
 input[type="number"] {
-  width: 100%;
+  width: 80px;
   padding: 6px;
-  border-radius: 4px;
-  border: 1px solid #222;
-  background: #0b0b0b;
-  color: #fff;
-}
-
-.buttons {
-  display: flex;
-  gap: 10px;
-}
-
-.btn {
-  flex: 1;
-  padding: 8px 10px;
+  font-size: 1rem;
+  border-radius: 5px;
   border: none;
+  margin-bottom: 10px;
+}
+
+/* Buttons */
+.btn {
+  border: none;
+  padding: 10px 20px;
+  border-radius: 8px;
+  font-size: 1rem;
+  margin: 5px;
   cursor: pointer;
-  border-radius: 4px;
-  font-weight: 600;
+  transition: 0.3s;
 }
 
 .red {
-  background: var(--red);
-  color: #fff;
+  background-color: #e63946;
+  color: white;
 }
 
 .black {
-  background: var(--black);
-  color: #fff;
-  border: 1px solid #222;
+  background-color: #222;
+  color: white;
+  border: 1px solid #444;
 }
 
-.spin-btn {
-  background: var(--accent);
-  color: #fff;
-  font-weight: 700;
-  padding: 10px;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
+.spin {
+  background-color: #1e40af;
+  color: white;
+  font-weight: bold;
+  width: 150px;
 }
 
-.result {
-  background: #0b0b0b;
-  padding: 8px;
-  border-radius: 6px;
-  text-align: center;
-  color: var(--muted);
-  min-height: 24px;
+.btn:hover {
+  transform: scale(1.05);
 }
 
-/* --- Mobile Anpassung --- */
-@media (max-width: 720px) {
-  .game {
+/* Ergebnis */
+#result {
+  margin-top: 15px;
+  font-size: 1.2rem;
+  color: #ccc;
+}
+
+/* --- MOBILE STYLES --- */
+@media (max-width: 700px) {
+  main {
     flex-direction: column;
-    align-items: center;
   }
 
-  .wheel-wrap {
+  .roulette-section {
     width: 300px;
     height: 300px;
   }
 
-  .panel {
-    width: 100%;
+  #wheel {
+    width: 300px;
+    height: 300px;
+  }
+
+  #ball {
+    left: 140px;
   }
 }
