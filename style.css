@@ -1,227 +1,105 @@
-:root {
-  --bg: #0f0f10;
-  --panel: #161616;
-  --muted: #9aa0a6;
-  --accent: #1e3a8a;
-  --red: #b32020;
-  --black: #0b0b0b;
-  --green: #0aa46a;
-  --gold: #c58a17;
-}
-
-* {
-  box-sizing: border-box;
-  font-family: Inter, Segoe UI, Arial, sans-serif;
-}
-
 body {
   margin: 0;
-  background: var(--bg);
-  color: #fff;
+  font-family: Arial, sans-serif;
+  background: #111;
+  color: white;
   display: flex;
-  align-items: center;
   justify-content: center;
+  align-items: center;
   min-height: 100vh;
 }
 
 .container {
-  width: 900px;
-  max-width: 98%;
-  padding: 20px;
+  max-width: 900px;
+  width: 95%;
 }
 
 header {
   display: flex;
+  justify-content: space-between;
   align-items: center;
-  gap: 14px;
-}
-
-header h1 {
-  font-size: 22px;
-  font-weight: 700;
-  letter-spacing: 0.4px;
-}
-
-header .balance {
-  margin-left: auto;
-  color: var(--muted);
+  margin-bottom: 15px;
 }
 
 .card {
-  background: linear-gradient(180deg, #161616 0, #111 100%);
-  border-radius: 8px;
-  padding: 18px;
-  border: 1px solid #222;
-}
-
-.top {
-  display: flex;
-  gap: 18px;
-  flex-wrap: wrap;
+  background: #1a1a1a;
+  border-radius: 10px;
+  padding: 20px;
 }
 
 .wheel-wrap {
-  flex: 1 1 400px;
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 12px;
+  justify-content: center;
+  margin-bottom: 20px;
 }
 
 .wheel-stage {
   position: relative;
-  width: 420px;
-  height: 420px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-canvas#wheel {
-  border-radius: 50%;
 }
 
 .pointer {
   position: absolute;
-  top: -16px;
+  top: -15px;
   left: 50%;
   transform: translateX(-50%);
   width: 0;
   height: 0;
-  border-left: 12px solid transparent;
-  border-right: 12px solid transparent;
-  border-bottom: 20px solid var(--gold);
-  z-index: 10;
+  border-left: 10px solid transparent;
+  border-right: 10px solid transparent;
+  border-bottom: 20px solid gold;
+  z-index: 5;
 }
 
 .ball {
   position: absolute;
-  width: 16px;
-  height: 16px;
+  width: 15px;
+  height: 15px;
   background: white;
   border-radius: 50%;
-  box-shadow: 0 0 6px rgba(0, 0, 0, 0.7);
   top: 10px;
   left: 50%;
-  transform: translate(-50%, 0);
-  z-index: 5;
-}
-
-.wheel-center {
-  position: absolute;
-  width: 60px;
-  height: 60px;
-  border-radius: 50%;
-  background: var(--gold);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-weight: 700;
-  color: #111;
+  transform: translateX(-50%);
+  z-index: 3;
 }
 
 .controls {
-  flex: 1 1 360px;
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-  padding: 4px;
-}
-
-.welcome {
-  background: #171717;
-  border-radius: 4px;
-  padding: 10px;
   text-align: center;
-  color: var(--muted);
-}
-
-.bet-row {
-  display: flex;
-  gap: 12px;
-  align-items: center;
-}
-
-.bet-row input[type=number] {
-  width: 120px;
-  padding: 8px;
-  border-radius: 4px;
-  border: 1px solid #222;
-  background: #0b0b0b;
-  color: #fff;
 }
 
 .btn {
-  padding: 10px 14px;
+  border: none;
+  padding: 8px 15px;
   border-radius: 6px;
-  border: 0;
+  margin: 5px;
   cursor: pointer;
-  font-weight: 700;
+  font-weight: bold;
 }
 
-.btn-red {
-  background: var(--red);
-  color: #fff;
-}
-
-.btn-black {
-  background: #000;
-  color: #fff;
-  border: 1px solid #333;
-}
-
-.btn-spin {
-  background: var(--accent);
-  color: #fff;
-  padding: 12px 20px;
-  font-size: 16px;
-  border-radius: 6px;
-}
-
-.result {
-  margin-top: 10px;
-  padding: 10px;
-  border-radius: 6px;
-  background: #0b0b0b;
-  color: var(--muted);
-}
+.btn.red { background: red; color: white; }
+.btn.black { background: black; color: white; border: 1px solid #333; }
+.btn.spin { background: #1e3a8a; color: white; }
 
 .number-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(40px, 1fr));
-  gap: 6px;
+  gap: 5px;
+  margin: 10px 0;
 }
 
 .number-btn {
   border: none;
   border-radius: 4px;
-  font-weight: 600;
-  cursor: pointer;
-  color: #fff;
-  height: 36px;
-  font-size: 13px;
+  padding: 8px;
+  font-weight: bold;
+  color: white;
 }
 
-.number-btn.red {
-  background: var(--red);
-}
+.number-btn.red { background: red; }
+.number-btn.black { background: black; }
+.number-btn.green { background: green; }
 
-.number-btn.black {
-  background: #000;
-}
-
-.number-btn.green {
-  background: var(--green);
-}
-
-.number-btn.selected {
-  outline: 2px solid var(--gold);
-}
-
-@media (max-width: 700px) {
-  .wheel-stage {
-    width: 300px;
-    height: 300px;
-  }
+.result {
+  margin-top: 10px;
+  font-weight: bold;
+  color: #ccc;
 }
