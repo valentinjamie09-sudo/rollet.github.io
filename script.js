@@ -1,33 +1,91 @@
-:root{
-  --bg:#0f0f10; --panel:#161616; --muted:#9aa0a6; --accent:#1e3a8a;
-  --red:#b32020; --black:#0b0b0b; --green:#0aa46a; --gold:#c58a17;
+const numbersOrder = [0,32,15,19,4,21,2,25,17,34,6,27,13,36,11,30,8,23,10,5,24,16,33,1,20,14,31,9,22,18,29,7,28,12,35,3,26];
+btn.className='num '+(colors[i]||'black');
+btn.textContent = i;
+btn.dataset.num = i;
+btn.addEventListener('click', ()=> selectNumber(btn));
+grid.appendChild(btn);
 }
-*{box-sizing:border-box;font-family:Inter,Segoe UI,Arial,sans-serif}
-body{margin:0;background:var(--bg);color:#fff;display:flex;align-items:center;justify-content:center;min-height:100vh}
-.container{width:900px;max-width:98%;padding:20px}
-header{display:flex;align-items:center;gap:14px}
-header .title{font-size:22px;font-weight:700;letter-spacing:0.4px}
-header .balance{margin-left:auto;color:var(--muted);display:flex;align-items:center;gap:8px}
-.card{background:linear-gradient(180deg,#161616 0,#111 100%);border-radius:8px;padding:18px;border:1px solid #222}
-.top{display:flex;gap:18px}
-.wheel-wrap{flex:0 0 460px;display:flex;flex-direction:column;align-items:center;gap:12px}
-.wheel-stage{position:relative;width:420px;height:420px;border-radius:50%;display:flex;align-items:center;justify-content:center}
-canvas#wheel{border-radius:50%}
-.ball{position:absolute;right:46px;top:50%;width:18px;height:18px;border-radius:50%;background:#fff;box-shadow:0 2px 6px rgba(0,0,0,0.6)}
-.wheel-center{position:absolute;width:60px;height:60px;border-radius:50%;background:var(--gold);display:flex;align-items:center;justify-content:center;font-weight:700;color:#111}
-.controls{flex:1;display:flex;flex-direction:column;gap:12px;padding:4px}
-.welcome{background:#171717;border-radius:4px;padding:10px;text-align:center;color:var(--muted)}
-.bet-row{display:flex;gap:12px;align-items:center}
-.bet-row input[type=number]{width:120px;padding:8px;border-radius:4px;border:1px solid #222;background:#0b0b0b;color:#fff}
-.btn{padding:10px 16px;border-radius:6px;border:0;cursor:pointer;font-weight:700}
-.btn-red{background:var(--red);color:#fff}
-.btn-black{background:#0b0b0b;color:#fff;border:1px solid #222}
-.btn-spin{background:var(--accent);color:#fff;padding:12px 20px;font-size:16px;border-radius:6px}
-.numbers-grid{display:grid;grid-template-columns:repeat(12,1fr);gap:10px;margin-top:14px}
-.num{height:40px;display:flex;align-items:center;justify-content:center;border-radius:4px;background:#0b0b0b;border:1px solid #222;color:#fff;cursor:pointer}
-.num.green{background:var(--green);color:#04291f}
-.num.red{background:var(--red)}
-.num.black{background:#0b0b0b}
-.result{margin-top:10px;padding:10px;border-radius:6px;background:#0b0b0b;color:var(--muted)}
-footer{margin-top:12px;display:flex;justify-content:space-between;align-items:center;color:var(--muted)}
-@media (max-width:920px){.top{flex-direction:column}.wheel-wrap{order:0}}
+
+
+let selectedNumber = null;
+let selectedColor = null;
+function selectNumber(el){
+selectedColor=null;
+document.querySelectorAll('.num').forEach(n=>n.style.outline='');
+el.style.outline='3px solid rgba(255,255,255,0.12)';
+selectedNumber = parseInt(el.dataset.num,10);
+document.getElementById('message').textContent = 'Gewählt: Zahl '+selectedNumber;
+}
+
+
+document.getElementById('betRed').addEventListener('click', ()=>{
+selectedColor='red';selectedNumber=null;
+document.querySelectorAll('.num').forEach(n=>n.style.outline='');
+document.getElementById('message').textContent='Gewählt: Rot';
+});
+
+
+document.getElementById('betBlack').addEventListener('click', ()=>{
+selectedColor='black';selectedNumber=null;
+document.querySelectorAll('.num').forEach(n=>n.style.outline='');
+document.getElementById('message').textContent='Gewählt: Schwarz';
+});
+
+
+let balance = 1000;
+const balanceEl = document.getElementById('balance');
+function refreshBalance(){balanceEl.textContent = balance;}
+refreshBalance();
+
+
+const spinBtn = document.getElementById('spinBtn');
+const betAmountInput = document.getElementById('betAmount');
+const resultBox = document.getElementById('resultBox');
+let spinning = false;
+
+
+function getWinningIndexFromAngle(angle){
+const seg = numbersOrder.length;
+const segDeg = 360/seg;
+let a = ((-angle + 90) % 360 + 360) % 360;
+return Math.floor(a/segDeg) % seg;
+}
+
+
+function spin(){
+if(spinning) return;
+const bet = Math.floor(Number(betAmountInput.value)||0);
+if(bet<=0){ resultBox.textContent='Setze einen gültigen Betrag.'; return; }
+if(bet>balance){ resultBox.textContent='Nicht genug Chips.'; return; }
+if(!selectedColor && selectedNumber===null){ resultBox.textContent='Wähle Rot/Schwarz oder eine Zahl.'; return; }
+spinning=true; resultBox.textContent='Dreht...'; balance-=bet; refreshBalance();
+const minTurns=4,maxTurns=7,seg=numbersOrder.length,segDeg=360/seg;
+const targetIndex=Math.floor(Math.random()*seg);
+const targetAngle=-(targetIndex*segDeg+segDeg/2)+(Math.random()*(segDeg-2)-(segDeg-2)/2);
+const turns=(Math.random()*(maxTurns-minTurns)+minTurns);
+const finalAngle=turns*360+targetAngle;
+canvas.style.transition='transform 4s cubic-bezier(.12,.9,.24,1)';
+canvas.style.transform='rotate('+finalAngle+'deg)';
+const ball=document.getElementById('ball');
+ball.style.transition='right 4s cubic-bezier(.12,.9,.24,1)';
+ball.style.right='18px';
+setTimeout(()=>{ball.style.right='46px';},4000);
+setTimeout(()=>{
+canvas.style.transition='';
+const landedIndex=getWinningIndexFromAngle(finalAngle);
+const landedNumber=numbersOrder[landedIndex];
+const landedColor=colors[landedNumber];
+let payout=0,message='';
+if(selectedNumber!==null){
+if(selectedNumber===landedNumber){payout=bet*35;message='Gewonnen! Zahl '+landedNumber+' ('+landedColor+') — Auszahlung: '+payout+' Chips';}
+else{message='Verloren. Gewonnen wurde Zahl '+landedNumber+' ('+landedColor+').';}
+}else if(selectedColor){
+if(selectedColor===landedColor){payout=bet*2;message='Gewonnen! Farbe '+landedColor+' — Auszahlung: '+payout+' Chips';}
+else{message='Verloren. Gewonnen wurde Zahl '+landedNumber+' ('+landedColor+').';}
+}
+balance+=payout;refreshBalance();resultBox.textContent=message;selectedNumber=null;selectedColor=null;document.querySelectorAll('.num').forEach(n=>n.style.outline='');document.getElementById('message').textContent='';const normalized=finalAngle%360;canvas.style.transform='rotate('+normalized+'deg)';spinning=false;},4200);
+}
+
+
+spinBtn.addEventListener('click',spin);
+betAmountInput.addEventListener('keydown',(e)=>{if(e.key==='Enter')spin();});
