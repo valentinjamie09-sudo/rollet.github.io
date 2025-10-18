@@ -1,87 +1,118 @@
-const wheel = document.getElementById("wheel");
-const spinBtn = document.getElementById("spinBtn");
-const balanceEl = document.getElementById("balance");
-const resultEl = document.getElementById("result");
-const betInput = document.getElementById("bet");
-
-let balance = 1000;
-let selectedColor = null;
-let selectedNumber = null;
-
-// Nummern-Buttons generieren
-const numberGrid = document.getElementById("numberGrid");
-for (let i = 0; i <= 36; i++) {
-  const btn = document.createElement("button");
-  btn.textContent = i;
-  btn.style.backgroundColor = i === 0 ? "green" : (isRed(i) ? "red" : "black");
-  btn.style.color = "#fff";
-  btn.onclick = () => {
-    selectedNumber = i;
-    highlightSelectedNumber(i);
-  };
-  numberGrid.appendChild(btn);
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: radial-gradient(circle, #0b0b0b, #000);
+  color: #fff;
+  text-align: center;
+  margin: 0;
+  padding: 0;
 }
 
-function highlightSelectedNumber(num) {
-  const buttons = numberGrid.querySelectorAll("button");
-  buttons.forEach(btn => {
-    btn.style.border = "none";
-    if (parseInt(btn.textContent) === num) {
-      btn.style.border = "2px solid yellow";
-    }
-  });
+.container {
+  margin-top: 40px;
 }
 
-// Farbwahl
-document.getElementById("red").onclick = () => selectedColor = "red";
-document.getElementById("black").onclick = () => selectedColor = "black";
-
-// Farbe von Zahlen (vereinfacht)
-function isRed(num) {
-  const redNumbers = [1,3,5,7,9,12,14,16,18,19,21,23,25,27,30,32,34,36];
-  return redNumbers.includes(num);
+.roulette-wrapper {
+  position: relative;
+  width: 300px;
+  height: 300px;
+  margin: 30px auto;
+  perspective: 1000px;
 }
 
-// Dreh-Funktion
-spinBtn.onclick = () => {
-  const bet = parseInt(betInput.value);
-  if (bet > balance || bet <= 0) {
-    alert("Ungültiger Einsatz!");
-    return;
-  }
+.roulette-wheel {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  border: 8px solid #c8aa6e;
+  background: conic-gradient(
+    red 0deg 9.72deg,
+    black 9.72deg 19.44deg,
+    red 19.44deg 29.16deg,
+    black 29.16deg 38.88deg,
+    red 38.88deg 48.6deg,
+    black 48.6deg 58.32deg,
+    red 58.32deg 68.04deg,
+    black 68.04deg 77.76deg,
+    red 77.76deg 87.48deg,
+    black 87.48deg 97.2deg,
+    red 97.2deg 106.92deg,
+    black 106.92deg 116.64deg,
+    red 116.64deg 126.36deg,
+    black 126.36deg 136.08deg,
+    red 136.08deg 145.8deg,
+    black 145.8deg 155.52deg,
+    red 155.52deg 165.24deg,
+    black 165.24deg 174.96deg,
+    red 174.96deg 184.68deg,
+    black 184.68deg 194.4deg,
+    red 194.4deg 204.12deg,
+    black 204.12deg 213.84deg,
+    red 213.84deg 223.56deg,
+    black 223.56deg 233.28deg,
+    red 233.28deg 243deg,
+    black 243deg 252.72deg,
+    red 252.72deg 262.44deg,
+    black 262.44deg 272.16deg,
+    red 272.16deg 281.88deg,
+    black 281.88deg 291.6deg,
+    red 291.6deg 301.32deg,
+    black 301.32deg 311.04deg,
+    red 311.04deg 320.76deg,
+    black 320.76deg 330.48deg,
+    green 330.48deg 360deg
+  );
+  transition: transform 4s ease-out;
+  box-shadow: 0 0 30px #c8aa6e;
+}
 
-  // Zufallszahl (0–36)
-  const result = Math.floor(Math.random() * 37);
-  const angle = 360 * 5 + (result * (360 / 37)); // Rad dreht sich 5x
+.marker {
+  position: absolute;
+  top: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 0;
+  height: 0;
+  border-left: 10px solid transparent;
+  border-right: 10px solid transparent;
+  border-bottom: 20px solid white;
+}
 
-  // Rad drehen
-  wheel.style.transform = `rotate(${angle}deg)`;
+.controls {
+  margin-top: 20px;
+}
 
-  // 4 Sekunden warten (Drehzeit)
-  setTimeout(() => {
-    balance -= bet;
+input[type="number"] {
+  width: 80px;
+  padding: 5px;
+}
 
-    let won = false;
-    let winnings = 0;
+button {
+  padding: 10px;
+  margin: 5px;
+  font-size: 16px;
+  cursor: pointer;
+  background: #222;
+  color: white;
+  border: 2px solid #555;
+  border-radius: 5px;
+}
 
-    if (selectedNumber !== null && result === selectedNumber) {
-      winnings = bet * 36;
-      won = true;
-    } else if (selectedColor && (
-      (selectedColor === "red" && isRed(result)) ||
-      (selectedColor === "black" && !isRed(result) && result !== 0)
-    )) {
-      winnings = bet * 2;
-      won = true;
-    }
+button:hover {
+  background: #444;
+}
 
-    if (won) {
-      balance += winnings;
-      resultEl.textContent = `Gewonnen! Die Zahl war ${result}. Gewinn: ${winnings} Chips`;
-    } else {
-      resultEl.textContent = `Verloren! Die Zahl war ${result}.`;
-    }
+.number-grid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  max-width: 360px;
+  margin: 10px auto;
+}
 
-    balanceEl.textContent = balance;
-  }, 4000);
-};
+.number-grid button {
+  width: 40px;
+  height: 40px;
+  margin: 2px;
+  font-weight: bold;
+  border-radius: 50%;
+}
