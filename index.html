@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Roulette Classic</title>
-  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
   <div class="container">
@@ -13,32 +13,34 @@
       <div class="balance">💰 Kontostand: <span id="balance">1000</span> Chips</div>
     </header>
 
-    <main>
-      <div class="roulette-section">
-        <div class="wheel-container">
-          <canvas id="wheel" width="320" height="320"></canvas>
-          <div class="pointer"></div>
-        </div>
-      </div>
-
-      <div class="control-section">
-        <h2>Willkommen beim Roulette Classic!</h2>
-
-        <label for="bet">Dein Einsatz:</label>
-        <input type="number" id="bet" value="5" min="1" />
-
-        <div class="color-buttons">
-          <button id="redBtn" class="btn red">Rot</button>
-          <button id="blackBtn" class="btn black">Schwarz</button>
+    <div class="card">
+      <div class="top">
+        <div class="wheel-wrap">
+          <div class="wheel-stage">
+            <canvas id="wheel" width="420" height="420"></canvas>
+            <div id="ball" class="ball"></div>
+            <div class="pointer"></div>
+            <div class="wheel-center">▼</div>
+          </div>
         </div>
 
-        <input type="number" id="numberBet" min="0" max="36" placeholder="Oder Zahl (0–36)" />
+        <div class="controls">
+          <div class="welcome">Willkommen beim Roulette Classic!</div>
+          <div class="bet-row">
+            <label>Dein Einsatz:</label>
+            <input type="number" id="bet" min="1" max="1000" value="5">
+            <button id="bet-red" class="btn btn-red">Rot</button>
+            <button id="bet-black" class="btn btn-black">Schwarz</button>
+          </div>
 
-        <button id="spinBtn" class="btn spin">🎡 Drehen!</button>
+          <div class="numbers-label">Oder wähle eine Zahl (0–36):</div>
+          <input type="number" id="numberBet" min="0" max="36" placeholder="Zahl eingeben">
 
-        <div id="result"></div>
+          <button id="spin" class="btn btn-spin">🎡 Drehen!</button>
+          <div id="result" class="result"></div>
+        </div>
       </div>
-    </main>
+    </div>
   </div>
 
   <script src="script.js"></script>
