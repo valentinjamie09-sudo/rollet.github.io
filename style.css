@@ -1,22 +1,21 @@
 body {
   background-color: #111;
-  color: #f0f0f0;
+  color: #eee;
   font-family: 'Segoe UI', sans-serif;
-  margin: 0;
-  padding: 0;
   display: flex;
   justify-content: center;
   align-items: center;
   min-height: 100vh;
+  margin: 0;
 }
 
 .container {
   width: 95%;
-  max-width: 1000px;
-  background-color: #1a1a1a;
-  border-radius: 20px;
-  box-shadow: 0 0 15px rgba(255, 255, 255, 0.1);
+  max-width: 900px;
+  background: #1c1c1c;
   padding: 20px;
+  border-radius: 15px;
+  box-shadow: 0 0 15px rgba(255, 255, 255, 0.05);
 }
 
 header {
@@ -27,59 +26,59 @@ header {
 }
 
 header h1 {
-  font-size: 1.8rem;
-  color: #fff;
+  color: white;
 }
 
 .balance {
-  font-size: 1rem;
   color: #ffc107;
 }
 
 main {
   display: flex;
   flex-wrap: wrap;
-  justify-content: space-around;
+  justify-content: center;
+  gap: 30px;
   align-items: center;
-  gap: 20px;
 }
 
-.roulette-section {
+.wheel-container {
   position: relative;
-  width: 400px;
-  height: 400px;
+  width: 320px;
+  height: 320px;
+}
+
+.pointer {
+  position: absolute;
+  top: -12px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 0;
+  height: 0;
+  border-left: 12px solid transparent;
+  border-right: 12px solid transparent;
+  border-bottom: 18px solid yellow;
+  z-index: 10;
 }
 
 #wheel {
   border-radius: 50%;
-  border: 8px solid #c28a00;
-  background-color: #222;
-}
-
-#ball {
-  position: absolute;
-  width: 20px;
-  height: 20px;
-  background: white;
-  border-radius: 50%;
-  top: 10px;
-  left: 190px;
-  transform-origin: 10px 190px;
+  background: #222;
+  border: 6px solid #a87900;
 }
 
 .control-section {
+  text-align: center;
   flex: 1;
   min-width: 250px;
-  text-align: center;
 }
 
 input[type="number"] {
   width: 100px;
-  padding: 6px;
-  font-size: 1rem;
+  padding: 5px;
   border-radius: 5px;
   border: none;
-  margin-bottom: 10px;
+  margin: 5px;
+  text-align: center;
 }
 
 .btn {
@@ -98,16 +97,14 @@ input[type="number"] {
 }
 
 .black {
-  background-color: #222;
+  background-color: #000;
   color: white;
-  border: 1px solid #444;
 }
 
 .spin {
   background-color: #1e40af;
   color: white;
   font-weight: bold;
-  width: 150px;
 }
 
 .btn:hover {
@@ -116,28 +113,23 @@ input[type="number"] {
 
 #result {
   margin-top: 15px;
-  font-size: 1.2rem;
+  font-size: 1.1rem;
   color: #ccc;
 }
 
-/* Responsive */
+/* Handy Ansicht */
 @media (max-width: 700px) {
   main {
     flex-direction: column;
   }
 
-  .roulette-section {
-    width: 300px;
-    height: 300px;
+  .wheel-container {
+    width: 260px;
+    height: 260px;
   }
 
   #wheel {
-    width: 300px;
-    height: 300px;
-  }
-
-  #ball {
-    left: 140px;
-    transform-origin: 10px 140px;
+    width: 260px;
+    height: 260px;
   }
 }
